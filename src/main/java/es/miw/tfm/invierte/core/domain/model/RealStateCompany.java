@@ -20,4 +20,10 @@ public class RealStateCompany {
   @NotBlank
   private String taxIdentificationNumber;
 
+  private String address;
+
+  private String phone;
+
+  private Integer allowedMemberQuantity;
+
 }

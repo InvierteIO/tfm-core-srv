@@ -33,9 +33,11 @@ public class RealStateCompanyPersistenceImpl implements RealStateCompanyPersiste
 
   @Override
   public Mono<RealStateCompany> update(String taxIdentificationNumber, RealStateCompany realStateCompany) {
+
     return Mono.just(this.realEstateCompanyRepository.findByTaxIdentificationNumber(taxIdentificationNumber))
         .switchIfEmpty(Mono.error(new NotFoundException("Non existent RealStateCompany with Tax identifier: " + taxIdentificationNumber)))
         .map(realEstateCompanyEntity -> {
+          realStateCompany.setTaxIdentificationNumber(taxIdentificationNumber);
           BeanUtils.copyProperties(realStateCompany, realEstateCompanyEntity);
           return this.realEstateCompanyRepository.save(realEstateCompanyEntity);
         })
@@ -48,5 +50,4 @@ public class RealStateCompanyPersistenceImpl implements RealStateCompanyPersiste
             Mono.error(new ConflictException("Already Exists RealStateCompany with TaxIdentifier : " + taxIdentificationNumber)))
         .then();
   }
-
 }

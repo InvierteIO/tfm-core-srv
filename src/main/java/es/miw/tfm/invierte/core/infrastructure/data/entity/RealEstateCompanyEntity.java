@@ -30,6 +30,12 @@ public class RealEstateCompanyEntity {
   @Column(unique = true, nullable = false)
   private String taxIdentificationNumber;
 
+  private String address;
+
+  private String phone;
+
+  private Integer allowedMemberQuantity;
+
   public RealEstateCompanyEntity(RealStateCompany realStateCompany) {
     BeanUtils.copyProperties(realStateCompany, this);
   }
