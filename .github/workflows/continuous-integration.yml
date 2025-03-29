@@ -28,7 +28,7 @@ jobs:
       - name: Sonar
         if: success() # always() failure() success()
         run: >
-          mvn -B verify -DskipTests sonar:sonar
+          mvn -B verify sonar:sonar
           -Dsonar.projectKey=InvierteIO_tfm-core-srv
           -Dsonar.organization=invierteio
           -Dsonar.host.url=https://sonarcloud.io

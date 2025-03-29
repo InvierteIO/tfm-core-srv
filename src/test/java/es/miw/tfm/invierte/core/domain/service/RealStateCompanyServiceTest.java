@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
-public class RealStateCompanyServiceTest {
+class RealStateCompanyServiceTest {
 
   private static final String TAX_IDENTIFIER_NUMBER = "123456789";
 
