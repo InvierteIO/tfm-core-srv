@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 @ExtendWith(MockitoExtension.class)
 class RealStateCompanyServiceTest {
 
-  private static final String TAX_IDENTIFIER_NUMBER = "123456789";
+  private static final String TAX_IDENTIFICATION_NUMBER = "123456789";
 
   @InjectMocks
   private RealStateCompanyService realStateCompanyService;
@@ -41,15 +41,15 @@ class RealStateCompanyServiceTest {
   }
 
   @Test
-  void read_whenTaxIdentifierExists_thenReturnRealStateCompany() {
+  void read_whenTaxIdentificationExists_thenReturnRealStateCompany() {
 
     final var mockedRealStateCompany = buildMockedOutRealStateCompany();
-    Mockito.when(this.realStateCompanyPersistence.readByTaxIdentificationNumber(TAX_IDENTIFIER_NUMBER))
+    Mockito.when(this.realStateCompanyPersistence.readByTaxIdentificationNumber(TAX_IDENTIFICATION_NUMBER))
         .thenReturn(mockedRealStateCompany);
 
-    final var actualResult = this.realStateCompanyService.read(TAX_IDENTIFIER_NUMBER);
+    final var actualResult = this.realStateCompanyService.read(TAX_IDENTIFICATION_NUMBER);
 
-    verify(this.realStateCompanyPersistence, times(1)).readByTaxIdentificationNumber(TAX_IDENTIFIER_NUMBER);
+    verify(this.realStateCompanyPersistence, times(1)).readByTaxIdentificationNumber(TAX_IDENTIFICATION_NUMBER);
     Assertions.assertNotNull(actualResult);
     final var realStateCompany = actualResult.block();
 
@@ -57,16 +57,16 @@ class RealStateCompanyServiceTest {
   }
 
   @Test
-  void update_whenTaxIdentifierExists_thenReturnUpdatedRealStateCompany() {
+  void update_whenTaxIdentificationExists_thenReturnUpdatedRealStateCompany() {
 
     final var mockedInRealStateCompany = buildMockedRealStateCompany();
     final var mockedOutRealStateCompany = buildMockedOutRealStateCompany();
-    Mockito.when(this.realStateCompanyPersistence.update(TAX_IDENTIFIER_NUMBER, mockedInRealStateCompany))
+    Mockito.when(this.realStateCompanyPersistence.update(TAX_IDENTIFICATION_NUMBER, mockedInRealStateCompany))
         .thenReturn(mockedOutRealStateCompany);
 
-    final var actualResult = this.realStateCompanyService.update(TAX_IDENTIFIER_NUMBER, mockedInRealStateCompany);
+    final var actualResult = this.realStateCompanyService.update(TAX_IDENTIFICATION_NUMBER, mockedInRealStateCompany);
 
-    verify(this.realStateCompanyPersistence, times(1)).update(TAX_IDENTIFIER_NUMBER, mockedInRealStateCompany);
+    verify(this.realStateCompanyPersistence, times(1)).update(TAX_IDENTIFICATION_NUMBER, mockedInRealStateCompany);
     Assertions.assertNotNull(actualResult);
     final var realStateCompany = actualResult.block();
 
@@ -75,14 +75,14 @@ class RealStateCompanyServiceTest {
 
   private Mono<RealStateCompany> buildMockedOutRealStateCompany() {
     return Mono.just(RealStateCompany.builder()
-        .taxIdentificationNumber(TAX_IDENTIFIER_NUMBER)
+        .taxIdentificationNumber(TAX_IDENTIFICATION_NUMBER)
         .name("Real State Company")
         .build());
   }
 
   private RealStateCompany buildMockedRealStateCompany() {
     return RealStateCompany.builder()
-        .taxIdentificationNumber(TAX_IDENTIFIER_NUMBER)
+        .taxIdentificationNumber(TAX_IDENTIFICATION_NUMBER)
         .name("Real State Company")
         .build();
   }

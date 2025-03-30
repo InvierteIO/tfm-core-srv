@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service("securityUtil")
+@NoArgsConstructor
 public class SecurityUtil {
 
   public static Mono<Boolean> hasRoleForCompanyCode(String role, String companyCode) {

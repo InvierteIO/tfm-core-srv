@@ -23,7 +23,7 @@ public class RealStateCompanyResource {
 
   public static final String REAL_STATE_COMPANIES = "/real-state-companies";
 
-  public static final String REAL_STATE_TAX_IDENTIFIER = "/{taxIdentifierNumber}";
+  public static final String REAL_STATE_TAX_IDENTIFICATION_NUMBER = "/{taxIdentificationNumber}";
 
   private final RealStateCompanyService realStateCompanyService;
 
@@ -33,16 +33,16 @@ public class RealStateCompanyResource {
     return this.realStateCompanyService.create(realStateCompany);
   }
 
-  @GetMapping(REAL_STATE_TAX_IDENTIFIER)
-  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentifierNumber)")
-  public Mono<RealStateCompany> read(@PathVariable String taxIdentifierNumber) {
-    return this.realStateCompanyService.read(taxIdentifierNumber);
+  @GetMapping(REAL_STATE_TAX_IDENTIFICATION_NUMBER)
+  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
+  public Mono<RealStateCompany> read(@PathVariable String taxIdentificationNumber) {
+    return this.realStateCompanyService.read(taxIdentificationNumber);
   }
 
-  @PutMapping(REAL_STATE_TAX_IDENTIFIER)
-  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentifierNumber)")
-  public Mono<RealStateCompany> update(@PathVariable String taxIdentifierNumber, @Valid @RequestBody RealStateCompany realStateCompany) {
-    return this.realStateCompanyService.update(taxIdentifierNumber, realStateCompany);
+  @PutMapping(REAL_STATE_TAX_IDENTIFICATION_NUMBER)
+  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
+  public Mono<RealStateCompany> update(@PathVariable String taxIdentificationNumber, @Valid @RequestBody RealStateCompany realStateCompany) {
+    return this.realStateCompanyService.update(taxIdentificationNumber, realStateCompany);
   }
 
 }
