@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @ApiTestConfig
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class RealStateCompanyResourceIT extends BaseContainerIntegrationTest {
 
   private static final String TAX_IDENTIFICATION_NUMBER = "123456789";
