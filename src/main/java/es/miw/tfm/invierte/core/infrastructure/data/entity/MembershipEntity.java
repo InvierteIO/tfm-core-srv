@@ -1,5 +1,6 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
+import java.math.BigDecimal;
 
 import es.miw.tfm.invierte.core.domain.model.Membership;
 import jakarta.persistence.Column;
@@ -8,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

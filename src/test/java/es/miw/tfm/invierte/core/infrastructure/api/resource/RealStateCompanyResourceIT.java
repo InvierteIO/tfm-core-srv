@@ -17,7 +17,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class RealStateCompanyResourceIT extends BaseContainerIntegrationTest {
 
-  private static final String TAX_IDENTIFIER_NUMBER = "123456789";
+  private static final String TAX_IDENTIFICATION_NUMBER = "123456789";
 
   @Autowired
   private WebTestClient webTestClient;
@@ -44,7 +44,7 @@ class RealStateCompanyResourceIT extends BaseContainerIntegrationTest {
     this.deleteRealStateCompanies();
     RealStateCompany realStateCompany = RealStateCompany.builder()
         .name("Company New")
-        .taxIdentificationNumber(TAX_IDENTIFIER_NUMBER)
+        .taxIdentificationNumber(TAX_IDENTIFICATION_NUMBER)
         .build();
 
     this.webTestClient.post().uri(RealStateCompanyResource.REAL_STATE_COMPANIES)
@@ -55,7 +55,7 @@ class RealStateCompanyResourceIT extends BaseContainerIntegrationTest {
         .value(response -> {
           Assertions.assertNotNull(response);
           Assertions.assertEquals(realStateCompany.getName(), response.getName());
-          Assertions.assertEquals(TAX_IDENTIFIER_NUMBER, response.getTaxIdentificationNumber());
+          Assertions.assertEquals(TAX_IDENTIFICATION_NUMBER, response.getTaxIdentificationNumber());
         });
   }
 
@@ -65,15 +65,15 @@ class RealStateCompanyResourceIT extends BaseContainerIntegrationTest {
     this.createRealStateCompany();
 
     String token = this.jwtService
-        .createToken("test@test.com", "test", "OWNER", TAX_IDENTIFIER_NUMBER);
+        .createToken("test@test.com", "test", "OWNER", TAX_IDENTIFICATION_NUMBER);
     String bearer = "Bearer " + token;
     RealStateCompany realStateCompany = RealStateCompany.builder()
         .name("Company Updated")
-        .taxIdentificationNumber(TAX_IDENTIFIER_NUMBER)
+        .taxIdentificationNumber(TAX_IDENTIFICATION_NUMBER)
         .build();
 
-    this.webTestClient.put().uri(RealStateCompanyResource.REAL_STATE_COMPANIES + RealStateCompanyResource.REAL_STATE_TAX_IDENTIFIER,
-            TAX_IDENTIFIER_NUMBER)
+    this.webTestClient.put().uri(RealStateCompanyResource.REAL_STATE_COMPANIES + RealStateCompanyResource.REAL_STATE_TAX_IDENTIFICATION_NUMBER,
+            TAX_IDENTIFICATION_NUMBER)
         .header("Authorization", bearer)
         .bodyValue(realStateCompany)
         .exchange()
@@ -82,7 +82,7 @@ class RealStateCompanyResourceIT extends BaseContainerIntegrationTest {
         .value(response -> {
           Assertions.assertNotNull(response);
           Assertions.assertEquals(realStateCompany.getName(), response.getName());
-          Assertions.assertEquals(TAX_IDENTIFIER_NUMBER, response.getTaxIdentificationNumber());
+          Assertions.assertEquals(TAX_IDENTIFICATION_NUMBER, response.getTaxIdentificationNumber());
         });
   }
 
@@ -92,18 +92,18 @@ class RealStateCompanyResourceIT extends BaseContainerIntegrationTest {
     this.createRealStateCompany();
 
     String token = this.jwtService
-        .createToken("test@test.com", "test", "OWNER", TAX_IDENTIFIER_NUMBER);
+        .createToken("test@test.com", "test", "OWNER", TAX_IDENTIFICATION_NUMBER);
     String bearer = "Bearer " + token;
 
-    this.webTestClient.get().uri(RealStateCompanyResource.REAL_STATE_COMPANIES + RealStateCompanyResource.REAL_STATE_TAX_IDENTIFIER,
-            TAX_IDENTIFIER_NUMBER)
+    this.webTestClient.get().uri(RealStateCompanyResource.REAL_STATE_COMPANIES + RealStateCompanyResource.REAL_STATE_TAX_IDENTIFICATION_NUMBER,
+            TAX_IDENTIFICATION_NUMBER)
         .header("Authorization", bearer)
         .exchange()
         .expectStatus().isOk()
         .expectBody(RealStateCompany.class)
         .value(response -> {
           Assertions.assertNotNull(response);
-          Assertions.assertEquals(TAX_IDENTIFIER_NUMBER, response.getTaxIdentificationNumber());
+          Assertions.assertEquals(TAX_IDENTIFICATION_NUMBER, response.getTaxIdentificationNumber());
         });
   }
 
@@ -111,7 +111,7 @@ class RealStateCompanyResourceIT extends BaseContainerIntegrationTest {
     this.realEstateCompanyRepository.save(RealEstateCompanyEntity
         .builder()
         .name("Company Default")
-        .taxIdentificationNumber(TAX_IDENTIFIER_NUMBER)
+        .taxIdentificationNumber(TAX_IDENTIFICATION_NUMBER)
         .build());
   }
 

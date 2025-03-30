@@ -1,9 +1,9 @@
 package es.miw.tfm.invierte.core.domain.model.validations;
 
+import java.math.BigDecimal;
+
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
-import java.math.BigDecimal;
 
 public class PositiveBigDecimalValidator implements ConstraintValidator<PositiveBigDecimal, BigDecimal> {
 

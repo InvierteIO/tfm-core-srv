@@ -47,7 +47,7 @@ public class JwtService {
     }
   }
 
-  public String createToken(String user, String name, String role, String taxIdentifierNumber) {
+  public String createToken(String user, String name, String role, String taxIdentificationNumber) {
     return JWT.create()
         .withIssuer(this.issuer)
         .withIssuedAt(new Date())
@@ -55,7 +55,7 @@ public class JwtService {
         .withExpiresAt(new Date(System.currentTimeMillis() + this.expire * 1000L))
         .withClaim(USER_CLAIM, user)
         .withClaim(NAME_CLAIM, name)
-        .withClaim(COMPANY_ROLE_CLAIM, Map.of(taxIdentifierNumber, role))
+        .withClaim(COMPANY_ROLE_CLAIM, Map.of(taxIdentificationNumber, role))
         .sign(Algorithm.HMAC256(this.secret));
   }
 

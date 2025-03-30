@@ -27,7 +27,7 @@ public class RealStateCompanyPersistenceImpl implements RealStateCompanyPersiste
   @Override
   public Mono<RealStateCompany> readByTaxIdentificationNumber(String taxIdentificationNumber) {
     return Mono.just(this.realEstateCompanyRepository.findByTaxIdentificationNumber(taxIdentificationNumber))
-        .switchIfEmpty(Mono.error(new NotFoundException("Non existent RealStateCompany with tax identifier: " + taxIdentificationNumber)))
+        .switchIfEmpty(Mono.error(new NotFoundException("Non existent RealStateCompany with tax identification: " + taxIdentificationNumber)))
         .map(RealEstateCompanyEntity::toRealStateCompany);
   }
 
@@ -35,7 +35,7 @@ public class RealStateCompanyPersistenceImpl implements RealStateCompanyPersiste
   public Mono<RealStateCompany> update(String taxIdentificationNumber, RealStateCompany realStateCompany) {
 
     return Mono.just(this.realEstateCompanyRepository.findByTaxIdentificationNumber(taxIdentificationNumber))
-        .switchIfEmpty(Mono.error(new NotFoundException("Non existent RealStateCompany with Tax identifier: " + taxIdentificationNumber)))
+        .switchIfEmpty(Mono.error(new NotFoundException("Non existent RealStateCompany with Tax identification: " + taxIdentificationNumber)))
         .map(realEstateCompanyEntity -> {
           realStateCompany.setTaxIdentificationNumber(taxIdentificationNumber);
           BeanUtils.copyProperties(realStateCompany, realEstateCompanyEntity);
@@ -47,7 +47,7 @@ public class RealStateCompanyPersistenceImpl implements RealStateCompanyPersiste
   private Mono<Void> assertTaxIdentificationNumberNotExist(String taxIdentificationNumber) {
     return Mono.justOrEmpty(this.realEstateCompanyRepository.findByTaxIdentificationNumber(taxIdentificationNumber))
         .map(realStateCompany ->
-            Mono.error(new ConflictException("Already Exists RealStateCompany with TaxIdentifier : " + taxIdentificationNumber)))
+            Mono.error(new ConflictException("Already Exists RealStateCompany with TaxIdentification : " + taxIdentificationNumber)))
         .then();
   }
 }

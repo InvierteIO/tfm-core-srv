@@ -1,14 +1,18 @@
 package es.miw.tfm.invierte.core.infrastructure.api.resource;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 import es.miw.tfm.invierte.core.BaseContainerIntegrationTest;
 import es.miw.tfm.invierte.core.configuration.JwtService;
 import es.miw.tfm.invierte.core.domain.model.Membership;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.MembershipRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.MembershipEntity;
-import java.math.BigDecimal;
-import java.util.Optional;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.WebTestClient;

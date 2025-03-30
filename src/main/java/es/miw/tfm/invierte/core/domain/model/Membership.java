@@ -1,10 +1,11 @@
 package es.miw.tfm.invierte.core.domain.model;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import es.miw.tfm.invierte.core.domain.model.validations.PositiveBigDecimal;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
-import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
