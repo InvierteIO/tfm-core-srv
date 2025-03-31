@@ -3,7 +3,7 @@ package es.miw.tfm.invierte.core.configuration.util;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Stream;
-
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service("securityUtil")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SecurityUtil {
 
   public static Mono<Boolean> hasRoleForCompanyCode(String role, String companyCode) {

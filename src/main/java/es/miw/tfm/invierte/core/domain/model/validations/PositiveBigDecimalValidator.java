@@ -9,6 +9,7 @@ public class PositiveBigDecimalValidator implements ConstraintValidator<Positive
 
     @Override
     public void initialize(PositiveBigDecimal constraint) {
+        // No initialization required for this validator.
     }
 
     @Override

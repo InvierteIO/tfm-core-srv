@@ -1,6 +1,7 @@
 package es.miw.tfm.invierte.core.infrastructure.api.resource;
 
 import es.miw.tfm.invierte.core.domain.model.RealStateCompany;
+import es.miw.tfm.invierte.core.domain.model.dto.RealStateCompanyDto;
 import es.miw.tfm.invierte.core.domain.service.RealStateCompanyService;
 import es.miw.tfm.invierte.core.infrastructure.api.Rest;
 import jakarta.validation.Valid;
@@ -25,6 +26,8 @@ public class RealStateCompanyResource {
 
   public static final String REAL_STATE_TAX_IDENTIFICATION_NUMBER = "/{taxIdentificationNumber}";
 
+  public static final String PROFILE = "/profile";
+
   private final RealStateCompanyService realStateCompanyService;
 
   @PostMapping(produces = {"application/json"})
@@ -33,16 +36,21 @@ public class RealStateCompanyResource {
     return this.realStateCompanyService.create(realStateCompany);
   }
 
-  @GetMapping(REAL_STATE_TAX_IDENTIFICATION_NUMBER)
-  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
-  public Mono<RealStateCompany> read(@PathVariable String taxIdentificationNumber) {
-    return this.realStateCompanyService.read(taxIdentificationNumber);
-  }
-
   @PutMapping(REAL_STATE_TAX_IDENTIFICATION_NUMBER)
   @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
   public Mono<RealStateCompany> update(@PathVariable String taxIdentificationNumber, @Valid @RequestBody RealStateCompany realStateCompany) {
     return this.realStateCompanyService.update(taxIdentificationNumber, realStateCompany);
   }
 
+  @GetMapping(REAL_STATE_TAX_IDENTIFICATION_NUMBER)
+  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
+  public Mono<RealStateCompany> read(@PathVariable String taxIdentificationNumber) {
+    return this.realStateCompanyService.read(taxIdentificationNumber);
+  }
+
+  @GetMapping(REAL_STATE_TAX_IDENTIFICATION_NUMBER+PROFILE)
+  @PreAuthorize("permitAll()")
+  public Mono<RealStateCompanyDto> readForProfile(@PathVariable String taxIdentificationNumber) {
+    return this.realStateCompanyService.readForProfile(taxIdentificationNumber);
+  }
 }

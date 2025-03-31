@@ -3,7 +3,7 @@ package es.miw.tfm.invierte.core.infrastructure.api.resource;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import es.miw.tfm.invierte.core.BaseContainerIntegrationTest;
+import es.miw.tfm.invierte.core.BaseContainerIntegration;
 import es.miw.tfm.invierte.core.configuration.JwtService;
 import es.miw.tfm.invierte.core.domain.model.Membership;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.MembershipRepository;
@@ -19,7 +19,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @ApiTestConfig
-class MembershipResourceIT extends BaseContainerIntegrationTest {
+class MembershipResourceIT extends BaseContainerIntegration {
 
     @Autowired
     private WebTestClient webTestClient;
@@ -70,7 +70,6 @@ class MembershipResourceIT extends BaseContainerIntegrationTest {
     }
 
     @Test
-    @Order(2)
     void update_whenValidData_thenReturnOK() {
         this.deleteMemberships();
         MembershipEntity existingEntity = this.membershipRepository.save(MembershipEntity.builder()
