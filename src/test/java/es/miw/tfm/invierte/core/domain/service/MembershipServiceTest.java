@@ -3,11 +3,10 @@ package es.miw.tfm.invierte.core.domain.service;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import es.miw.tfm.invierte.core.domain.model.Membership;
 import es.miw.tfm.invierte.core.domain.persistence.MembershipPersistence;
+import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
