@@ -57,6 +57,23 @@ class RealStateCompanyServiceTest {
   }
 
   @Test
+  void read_whenTaxIdentificationExistsForProfile_thenReturnRealStateCompany() {
+
+    final var mockedRealStateCompany = buildMockedOutRealStateCompany();
+    Mockito.when(this.realStateCompanyPersistence.readByTaxIdentificationNumber(TAX_IDENTIFICATION_NUMBER))
+            .thenReturn(mockedRealStateCompany);
+
+    final var actualResult = this.realStateCompanyService.readForProfile(TAX_IDENTIFICATION_NUMBER);
+
+    verify(this.realStateCompanyPersistence, times(1)).readByTaxIdentificationNumber(TAX_IDENTIFICATION_NUMBER);
+    Assertions.assertNotNull(actualResult);
+    final var realStateCompany = actualResult.block();
+
+    Assertions.assertEquals(mockedRealStateCompany.block().getTaxIdentificationNumber(),
+            realStateCompany.getTaxIdentificationNumber());
+  }
+
+  @Test
   void update_whenTaxIdentificationExists_thenReturnUpdatedRealStateCompany() {
 
     final var mockedInRealStateCompany = buildMockedRealStateCompany();

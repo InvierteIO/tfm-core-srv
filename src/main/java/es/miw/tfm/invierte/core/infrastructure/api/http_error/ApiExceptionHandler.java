@@ -5,6 +5,7 @@ import es.miw.tfm.invierte.core.domain.exception.BadRequestException;
 import es.miw.tfm.invierte.core.domain.exception.ConflictException;
 import es.miw.tfm.invierte.core.domain.exception.ForbiddenException;
 import es.miw.tfm.invierte.core.domain.exception.NotFoundException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.reactive.resource.NoResourceFoundException;
 import org.springframework.web.server.ResponseStatusException;
 
+@Log4j2
 @ControllerAdvice
 public class ApiExceptionHandler {
 
@@ -83,8 +85,8 @@ public class ApiExceptionHandler {
   })
   @ResponseBody
   public ErrorMessage exception(
-      Exception exception) { //WARNING. It is caught for unforeseen cases.The error must be properly handled or caught.
-    exception.printStackTrace(); //WARNING. ONLY on develop. it helps to debugging but it is a code smell
+      Exception exception) {
+    log.error("[MIW]::", exception);
     return new ErrorMessage(exception, HttpStatus.INTERNAL_SERVER_ERROR.value());
   }
 

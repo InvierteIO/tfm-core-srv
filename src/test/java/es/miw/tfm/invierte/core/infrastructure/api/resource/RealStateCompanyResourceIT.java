@@ -1,8 +1,9 @@
 package es.miw.tfm.invierte.core.infrastructure.api.resource;
 
-import es.miw.tfm.invierte.core.BaseContainerIntegrationTest;
+import es.miw.tfm.invierte.core.BaseContainerIntegration;
 import es.miw.tfm.invierte.core.configuration.JwtService;
 import es.miw.tfm.invierte.core.domain.model.RealStateCompany;
+import es.miw.tfm.invierte.core.domain.model.dto.RealStateCompanyDto;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.RealEstateCompanyRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.RealEstateCompanyEntity;
 import org.junit.jupiter.api.AfterAll;
@@ -15,7 +16,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @ApiTestConfig
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-class RealStateCompanyResourceIT extends BaseContainerIntegrationTest {
+class RealStateCompanyResourceIT extends BaseContainerIntegration {
 
   private static final String TAX_IDENTIFICATION_NUMBER = "123456789";
 
@@ -106,6 +107,28 @@ class RealStateCompanyResourceIT extends BaseContainerIntegrationTest {
           Assertions.assertEquals(TAX_IDENTIFICATION_NUMBER, response.getTaxIdentificationNumber());
         });
   }
+
+    @Test
+    void read_whenReceivedDataForProfile_thenReturnOK() {
+        this.deleteRealStateCompanies();
+        this.createRealStateCompany();
+
+        String token = this.jwtService
+                .createToken("test@test.com", "test", "OWNER", TAX_IDENTIFICATION_NUMBER);
+        String bearer = "Bearer " + token;
+
+        this.webTestClient.get().uri(RealStateCompanyResource.REAL_STATE_COMPANIES
+            + RealStateCompanyResource.REAL_STATE_TAX_IDENTIFICATION_NUMBER + RealStateCompanyResource.PROFILE,
+            TAX_IDENTIFICATION_NUMBER)
+            .header("Authorization", bearer)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(RealStateCompanyDto.class)
+            .value(response -> {
+                Assertions.assertNotNull(response);
+                Assertions.assertEquals(TAX_IDENTIFICATION_NUMBER, response.getTaxIdentificationNumber());
+            });
+    }
 
   private void createRealStateCompany() {
     this.realEstateCompanyRepository.save(RealEstateCompanyEntity
