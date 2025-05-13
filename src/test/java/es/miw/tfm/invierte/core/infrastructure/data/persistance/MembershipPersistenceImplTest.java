@@ -28,7 +28,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
-public class MembershipPersistenceImplTest {
+class MembershipPersistenceImplTest {
   @InjectMocks
   private MembershipPersistenceImpl membershipPersistence;
 

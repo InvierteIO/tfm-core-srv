@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PositiveBigDecimalValidatorTest {
+class PositiveBigDecimalValidatorTest {
 
   private PositiveBigDecimalValidator validator;
 

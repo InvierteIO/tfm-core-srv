@@ -20,7 +20,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
-public class MembershipResourceTest {
+class MembershipResourceTest {
 
   @InjectMocks
   private MembershipResource membershipResource;
