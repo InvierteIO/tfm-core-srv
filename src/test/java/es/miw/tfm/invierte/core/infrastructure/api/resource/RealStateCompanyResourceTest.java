@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
-public class RealStateCompanyResourceTest {
+class RealStateCompanyResourceTest {
 
   @InjectMocks
   private RealStateCompanyResource realStateCompanyResource;

@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import es.miw.tfm.invierte.core.domain.model.Membership;
 import org.junit.jupiter.api.Test;
 
-public class MembershipEntityTest {
+class MembershipEntityTest {
 
   @Test
   void shouldConvertToMembership() {

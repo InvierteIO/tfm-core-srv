@@ -6,7 +6,7 @@ import es.miw.tfm.invierte.core.domain.model.RealStateCompany;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class RealEstateCompanyEntityTest {
+class RealEstateCompanyEntityTest {
 
   @Test
   void shouldConvertToRealStateCompany() {
