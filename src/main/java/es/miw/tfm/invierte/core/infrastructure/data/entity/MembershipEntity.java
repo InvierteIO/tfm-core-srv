@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.BeanUtils;
 
 @Builder
 @Data
@@ -42,24 +41,26 @@ public class MembershipEntity {
     private int maxProjects;
 
     public MembershipEntity(Membership membership) {
-        BeanUtils.copyProperties(membership, this);
+        this.id = membership.getId();
         this.level = membership.getLevelName();
         this.overview = membership.getShortDescription();
         this.description = membership.getLongDescription();
         this.monthlyPrice = membership.getMonthlyCost();
         this.annualPrice = membership.getAnnualCost();
         this.maxAdvisors = membership.getMaxRealtors();
+        this.maxProjects = membership.getMaxProjects();
     }
 
     public Membership toMembership() {
         Membership membership = new Membership();
-        BeanUtils.copyProperties(this, membership);
+        membership.setId(id);
         membership.setLevelName(level);
         membership.setShortDescription(overview);
         membership.setLongDescription(description);
         membership.setMonthlyCost(monthlyPrice);
         membership.setAnnualCost(annualPrice);
         membership.setMaxRealtors(maxAdvisors);
+        membership.setMaxProjects(maxProjects);
         return membership;
     }
 }

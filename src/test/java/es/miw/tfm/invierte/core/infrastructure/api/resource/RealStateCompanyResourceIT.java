@@ -9,6 +9,7 @@ import es.miw.tfm.invierte.core.infrastructure.data.entity.RealEstateCompanyEnti
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -16,6 +17,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @ApiTestConfig
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@Tag("IntegrationTest")
 class RealStateCompanyResourceIT extends BaseContainerIntegration {
 
   private static final String TAX_IDENTIFICATION_NUMBER = "123456789";

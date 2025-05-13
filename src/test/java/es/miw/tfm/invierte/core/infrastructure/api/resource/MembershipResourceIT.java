@@ -1,15 +1,17 @@
 package es.miw.tfm.invierte.core.infrastructure.api.resource;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 import es.miw.tfm.invierte.core.BaseContainerIntegration;
 import es.miw.tfm.invierte.core.configuration.JwtService;
 import es.miw.tfm.invierte.core.domain.model.Membership;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.MembershipRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.MembershipEntity;
-import java.math.BigDecimal;
-import java.util.Optional;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -17,6 +19,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @ApiTestConfig
+@Tag("IntegrationTest")
 class MembershipResourceIT extends BaseContainerIntegration {
 
     @Autowired
