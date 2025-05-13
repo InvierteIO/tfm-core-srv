@@ -14,6 +14,14 @@ import org.springframework.security.web.server.authentication.AuthenticationWebF
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
 import reactor.core.publisher.Mono;
 
+/**
+ * Configuration class for setting up security in the application.
+ * This class configures security filters and authentication mechanisms using Spring Security.
+ * It enables reactive method security and WebFlux security.
+ *
+ * @author denilssonmn
+ * @author devcastlecix
+ */
 @Configuration
 @EnableReactiveMethodSecurity
 @EnableWebFluxSecurity
@@ -21,11 +29,25 @@ public class SecurityConfiguration {
 
   private final JwtService jwtService;
 
+  /**
+   * Constructor for SecurityConfiguration.
+   * Initializes the JwtService used for token extraction and validation.
+   *
+   * @param jwtService the service for handling JWT operations
+   */
   @Autowired
   public SecurityConfiguration(JwtService jwtService) {
     this.jwtService = jwtService;
   }
 
+  /**
+   * Configures the security filter chain for the application.
+   * Disables CSRF, sets a no-op security context repository,
+   * and adds a custom authentication filter.
+   *
+   * @param http the ServerHttpSecurity object for configuring security
+   * @return the configured SecurityWebFilterChain
+   */
   @Bean
   public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
     return http
@@ -35,6 +57,12 @@ public class SecurityConfiguration {
         .build();
   }
 
+  /**
+   * Creates a custom authentication filter for handling bearer token authentication.
+   * Extracts the token from the Authorization header and creates an authentication token.
+   *
+   * @return the configured AuthenticationWebFilter
+   */
   private AuthenticationWebFilter bearerAuthenticationFilter() {
     AuthenticationWebFilter bearerAuthenticationFilter =
         new AuthenticationWebFilter(new JwtAuthenticationManager(jwtService));

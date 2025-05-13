@@ -16,6 +16,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Mono;
 
+/**
+ * REST controller for managing Real Estate Companies.
+ * This class provides endpoints for creating, reading, and updating real estate companies.
+ * It uses the `RealStateCompanyService` to perform the necessary operations.
+ *
+ * <p>All endpoints are secured and require appropriate permissions to access.
+ *
+ * @see RealStateCompanyService
+ *
+ * @author denilssonmn
+ */
 @Log4j2
 @Rest
 @RequestMapping(RealStateCompanyResource.REAL_STATE_COMPANIES)
@@ -38,7 +49,8 @@ public class RealStateCompanyResource {
 
   @PutMapping(REAL_STATE_TAX_IDENTIFICATION_NUMBER)
   @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
-  public Mono<RealStateCompany> update(@PathVariable String taxIdentificationNumber, @Valid @RequestBody RealStateCompany realStateCompany) {
+  public Mono<RealStateCompany> update(@PathVariable String taxIdentificationNumber,
+      @Valid @RequestBody RealStateCompany realStateCompany) {
     return this.realStateCompanyService.update(taxIdentificationNumber, realStateCompany);
   }
 
@@ -48,7 +60,7 @@ public class RealStateCompanyResource {
     return this.realStateCompanyService.read(taxIdentificationNumber);
   }
 
-  @GetMapping(REAL_STATE_TAX_IDENTIFICATION_NUMBER+PROFILE)
+  @GetMapping(REAL_STATE_TAX_IDENTIFICATION_NUMBER + PROFILE)
   @PreAuthorize("permitAll()")
   public Mono<RealStateCompanyDto> readForProfile(@PathVariable String taxIdentificationNumber) {
     return this.realStateCompanyService.readForProfile(taxIdentificationNumber);

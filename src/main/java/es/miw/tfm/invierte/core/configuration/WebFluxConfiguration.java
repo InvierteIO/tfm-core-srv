@@ -5,6 +5,14 @@ import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
+/**
+ * Configuration class for setting up WebFlux in the application.
+ * This class configures CORS mappings to allow cross-origin requests from specific origins.
+ * It implements the WebFluxConfigurer interface to customize WebFlux settings.
+ *
+ * @author denilssonmn
+ * @author devcastlecix
+ */
 @Configuration
 @EnableWebFlux
 public class WebFluxConfiguration implements WebFluxConfigurer {
