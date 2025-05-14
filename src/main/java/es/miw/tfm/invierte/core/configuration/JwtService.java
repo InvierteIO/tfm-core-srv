@@ -3,6 +3,7 @@ package es.miw.tfm.invierte.core.configuration;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import es.miw.tfm.invierte.core.configuration.jwt_provider.JwtKeyProvider;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
@@ -32,27 +33,27 @@ public class JwtService {
 
   private static final String COMPANY_ROLE_CLAIM = "companyRoles";
 
-  private final String secret;
-
   private final String issuer;
 
   private final int expire;
+
+  private final Algorithm algorithm;
 
   /**
    * Constructor for JwtService.
    * Initializes the secret, issuer, and expiration time for JWT tokens.
    *
-   * @param secret the secret key for signing tokens
+   * @param keyProvider the provider for JWT keys
    * @param issuer the issuer of the tokens
    * @param expire the expiration time in seconds
    */
   @Autowired
-  public JwtService(@Value("${tfm.jwt.secret}") String secret,
+  public JwtService(JwtKeyProvider keyProvider,
       @Value("${tfm.jwt.issuer}") String issuer,
       @Value("${tfm.jwt.expire}") int expire) {
-    this.secret = secret;
     this.issuer = issuer;
     this.expire = expire;
+    this.algorithm = Algorithm.RSA256(keyProvider.getPublicKey(), keyProvider.getPrivateKey());
   }
 
   /**
@@ -88,7 +89,7 @@ public class JwtService {
         .withClaim(USER_CLAIM, user)
         .withClaim(NAME_CLAIM, name)
         .withClaim(COMPANY_ROLE_CLAIM, Map.of(taxIdentificationNumber, role))
-        .sign(Algorithm.HMAC256(this.secret));
+        .sign(this.algorithm);
   }
 
   /**
@@ -147,7 +148,7 @@ public class JwtService {
    */
   private Optional<DecodedJWT> verify(String token) {
     try {
-      return Optional.of(JWT.require(Algorithm.HMAC256(this.secret))
+      return Optional.of(JWT.require(this.algorithm)
           .withIssuer(this.issuer).build()
           .verify(token));
     } catch (Exception exception) {
