@@ -22,7 +22,7 @@ import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueReques
 import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueResponse;
 
 @ExtendWith(MockitoExtension.class)
-public class AwsJwtKeyProviderTest {
+class AwsJwtKeyProviderTest {
 
   private String readPemFile(String path) throws Exception {
     return new String(Files.readAllBytes(Paths.get(Objects
