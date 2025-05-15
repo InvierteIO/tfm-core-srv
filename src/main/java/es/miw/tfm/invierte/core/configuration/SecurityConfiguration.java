@@ -57,7 +57,6 @@ public class SecurityConfiguration {
         ServerWebExchangeMatchers.pathMatchers("/secure/**", "/admin/**");
 
     return http
-        .csrf(ServerHttpSecurity.CsrfSpec::disable)
         .csrf(csrfSpec -> csrfSpec.requireCsrfProtectionMatcher(csrfProtectedEndpoints))
         .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
         .addFilterAt(bearerAuthenticationFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
