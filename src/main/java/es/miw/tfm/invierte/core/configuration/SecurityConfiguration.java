@@ -12,6 +12,8 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import reactor.core.publisher.Mono;
 
 /**
@@ -50,8 +52,13 @@ public class SecurityConfiguration {
    */
   @Bean
   public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
+
+    ServerWebExchangeMatcher csrfProtectedEndpoints =
+        ServerWebExchangeMatchers.pathMatchers("/secure/**", "/admin/**");
+
     return http
         .csrf(ServerHttpSecurity.CsrfSpec::disable)
+        .csrf(csrfSpec -> csrfSpec.requireCsrfProtectionMatcher(csrfProtectedEndpoints))
         .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
         .addFilterAt(bearerAuthenticationFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
         .build();
@@ -73,5 +80,6 @@ public class SecurityConfiguration {
     });
     return bearerAuthenticationFilter;
   }
+
 
 }
