@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class RealStateCompanyResource {
 
-  public static final String REAL_STATE_COMPANIES = "/real-state-companies";
+  public static final String REAL_STATE_COMPANIES = "/real-estate-companies";
 
   public static final String REAL_STATE_TAX_IDENTIFICATION_NUMBER = "/{taxIdentificationNumber}";
 
