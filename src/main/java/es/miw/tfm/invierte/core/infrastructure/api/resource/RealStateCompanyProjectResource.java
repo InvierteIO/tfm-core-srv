@@ -38,7 +38,8 @@ public class RealStateCompanyProjectResource {
 
   public static final String REAL_STATE_TAX_IDENTIFICATION_NUMBER = "/{taxIdentificationNumber}";
 
-  public static final String COMPANY_PROJECT = REAL_STATE_COMPANIES + REAL_STATE_TAX_IDENTIFICATION_NUMBER + "/projects";
+  public static final String COMPANY_PROJECT = REAL_STATE_COMPANIES
+      + REAL_STATE_TAX_IDENTIFICATION_NUMBER + "/projects";
 
   public static final String PROJECT_ID = "/{projectId}";
 
@@ -46,26 +47,27 @@ public class RealStateCompanyProjectResource {
 
   @PostMapping(produces = {"application/json"})
   @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
-  public Mono<Project> create(@PathVariable String taxIdentificationNumber, @Valid @RequestBody Project project) {
+  public Mono<Project> create(@PathVariable String taxIdentificationNumber,
+      @Valid @RequestBody Project project) {
     project.setTaxIdentificationNumber(taxIdentificationNumber);
     return this.projectService.create(project);
   }
 
   @PutMapping(PROJECT_ID)
   @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
-  public Mono<Project> update(@PathVariable String taxIdentificationNumber, @PathVariable Integer projectId,
-      @Valid @RequestBody Project project) {
+  public Mono<Project> update(@PathVariable String taxIdentificationNumber,
+      @PathVariable Integer projectId, @Valid @RequestBody Project project) {
     project.setTaxIdentificationNumber(taxIdentificationNumber);
     return this.projectService.update(projectId, project);
   }
 
   @GetMapping(PROJECT_ID)
   @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
-  public Mono<Project> read(@PathVariable String taxIdentificationNumber, @PathVariable Integer projectId) {
+  public Mono<Project> read(@PathVariable String taxIdentificationNumber,
+      @PathVariable Integer projectId) {
     log.info("Read project {} for taxIdentificationNumber: {}", projectId, taxIdentificationNumber);
     return this.projectService.readById(projectId);
   }
-
 
 
 }
