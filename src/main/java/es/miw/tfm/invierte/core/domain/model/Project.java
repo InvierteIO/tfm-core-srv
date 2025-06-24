@@ -1,5 +1,8 @@
 package es.miw.tfm.invierte.core.domain.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import es.miw.tfm.invierte.core.domain.model.enums.ProjectStatus;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +19,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Project {
 
-  private int id;
+  private Integer id;
 
   @NotBlank
   private String name;
@@ -26,7 +29,6 @@ public class Project {
 
   private String officeNumber;
 
-  @NotBlank
   private String supervisor;
 
   private ProjectStatus status;
@@ -37,6 +39,8 @@ public class Project {
   private String taxIdentificationNumber;
 
   private String description;
+
+  private List<ProjectStage> projectStages = new ArrayList<>();
 
   public void setDefaultValues() {
     this.status = ProjectStatus.DRAFT;
