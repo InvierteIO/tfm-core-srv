@@ -51,8 +51,8 @@ public class SubProjectEntity {
   @Column(length = 4, nullable = false)
   private String stage;
 
-  @Column(name = "klm_url", length = 1000)
-  private String klmUrl;
+  @Column(name = "kml_kmz_url", length = 1000)
+  private String kmlKmzUrl;
 
   @Column(length = 8)
   private String zipCode;
@@ -144,6 +144,10 @@ public class SubProjectEntity {
         .forEach(stageCatalogDetail ->
             this.subProjectCatalogDetailEntities.add(
             new SubProjectCatalogDetailEntity(stageCatalogDetail, this)));
+
+    Optional.ofNullable(projectStage.getLocationCode())
+        .ifPresent(locationCode ->
+            this.locationCode = new LocationCodeEntity(locationCode));
   }
 
   /**
@@ -204,6 +208,10 @@ public class SubProjectEntity {
           projectStage.getStageCatalogDetails().add(
               subProjectCatalogDetailEntity.toSubProjectCatalogDetail());
         });
+
+    Optional.ofNullable(this.locationCode)
+        .ifPresent(locationCodeEntity ->
+            projectStage.setLocationCode(locationCodeEntity.toLocationCode()));
 
     return projectStage;
   }

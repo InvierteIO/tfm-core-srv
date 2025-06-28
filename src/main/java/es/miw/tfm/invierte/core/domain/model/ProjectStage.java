@@ -30,6 +30,18 @@ public class ProjectStage {
 
   private SubProjectStatus status;
 
+  private String address;
+
+  private String addressNumber;
+
+  private String addressReference;
+
+  private String zipCode;
+
+  private String kmlKmzUrl;
+
+  private LocationCode locationCode;
+
   private List<StageBank> stageBanks = new ArrayList<>();
 
   private List<StageBonusType> stageBonusTypes = new ArrayList<>();

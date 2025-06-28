@@ -1,5 +1,6 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
+import es.miw.tfm.invierte.core.domain.model.LocationCode;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 /**
  * JPA entity representing a location code in the system.
@@ -39,10 +41,26 @@ public class LocationCodeEntity {
   @Column(length = 10)
   private String type;
 
-  @Column(length = 20)
+  @Column(length = 50)
   private String name;
 
   @OneToMany(mappedBy = "locationCode", cascade = CascadeType.ALL, orphanRemoval = true)
   List<SubProjectEntity> subProjectEntities;
 
+  public LocationCodeEntity(LocationCode locationCode) {
+    BeanUtils.copyProperties(locationCode, this);
+  }
+
+  /**
+   * Converts this entity to its corresponding domain model object.
+   * Copies all matching properties from the entity to a new LocationCode
+   * instance.
+   *
+   * @return the domain model representation of this location code entity
+   */
+  public LocationCode toLocationCode() {
+    LocationCode locationCode = new LocationCode();
+    BeanUtils.copyProperties(this, locationCode);
+    return locationCode;
+  }
 }
