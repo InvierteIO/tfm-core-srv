@@ -16,15 +16,18 @@ public class InfraInstallation {
 
   private Integer id;
 
-  private String name;
-
   private String code;
 
+  private String name;
+
   private String dataType;
+
+  private String description;
+
+  private String other;
 
   private InstallationType installationType;
 
   private Catalog catalog;
-
 
 }
