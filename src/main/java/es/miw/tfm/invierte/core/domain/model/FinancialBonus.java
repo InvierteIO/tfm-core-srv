@@ -1,5 +1,8 @@
 package es.miw.tfm.invierte.core.domain.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,14 +14,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FinancialBonusType {
+public class FinancialBonus {
 
   private Integer id;
 
   private String name;
 
-  private String dataType;
-
-  private Boolean required;
+  private List<FinancialBonusType> types = new ArrayList<>();
 
 }

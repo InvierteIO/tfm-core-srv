@@ -11,14 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FinancialBonusType {
+public class Feature {
 
   private Integer id;
 
   private String name;
-
-  private String dataType;
-
-  private Boolean required;
 
 }

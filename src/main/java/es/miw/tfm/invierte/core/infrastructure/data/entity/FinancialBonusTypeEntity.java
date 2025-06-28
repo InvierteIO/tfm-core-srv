@@ -45,9 +45,9 @@ public class FinancialBonusTypeEntity {
   private String name;
 
   @Column(name = "data_type", length = 20)
-  private String datatype;
+  private String dataType;
 
-  private boolean required;
+  private Boolean required;
 
   @ManyToOne
   @JoinColumn(name = "financial_bonus_id", referencedColumnName = "id")

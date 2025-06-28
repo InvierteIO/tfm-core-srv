@@ -24,4 +24,6 @@ public interface ProjectPersistence {
 
   Mono<Project> readById(Integer id);
 
+  Mono<Project> readByTaxIdentificationNumberAndId(String taxIdentificationNumber,
+      Integer projectId);
 }

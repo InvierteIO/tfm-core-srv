@@ -17,10 +17,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
-class RealStateCompanyResourceTest {
+class RealEstateCompanyResourceTest {
 
   @InjectMocks
-  private RealStateCompanyResource realStateCompanyResource;
+  private RealEstateCompanyResource realEstateCompanyResource;
 
   @Mock
   private RealStateCompanyService realStateCompanyService;
@@ -33,7 +33,7 @@ class RealStateCompanyResourceTest {
         .build();
     when(realStateCompanyService.create(company)).thenReturn(Mono.just(company));
 
-    Mono<RealStateCompany> response = realStateCompanyResource.create(company);
+    Mono<RealStateCompany> response = realEstateCompanyResource.create(company);
 
     assertNotNull(response);
     assertEquals("Company A", response.block().getName());
@@ -48,7 +48,7 @@ class RealStateCompanyResourceTest {
         .build();
     when(realStateCompanyService.update("123456789", company)).thenReturn(Mono.just(company));
 
-    Mono<RealStateCompany> response = realStateCompanyResource.update("123456789", company);
+    Mono<RealStateCompany> response = realEstateCompanyResource.update("123456789", company);
 
     assertNotNull(response);
     assertEquals("Updated Company", response.block().getName());
@@ -63,7 +63,7 @@ class RealStateCompanyResourceTest {
         .build();
     when(realStateCompanyService.read("123456789")).thenReturn(Mono.just(company));
 
-    Mono<RealStateCompany> response = realStateCompanyResource.read("123456789");
+    Mono<RealStateCompany> response = realEstateCompanyResource.read("123456789");
 
     assertNotNull(response);
     assertEquals("Company A", response.block().getName());
@@ -78,7 +78,7 @@ class RealStateCompanyResourceTest {
         .build();
     when(realStateCompanyService.readForProfile("123456789")).thenReturn(Mono.just(companyDto));
 
-    Mono<RealStateCompanyDto> response = realStateCompanyResource.readForProfile("123456789");
+    Mono<RealStateCompanyDto> response = realEstateCompanyResource.readForProfile("123456789");
 
     assertNotNull(response);
     assertEquals("Company A", response.block().getName());

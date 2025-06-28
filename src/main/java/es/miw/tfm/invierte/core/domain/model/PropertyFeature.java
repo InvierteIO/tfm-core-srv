@@ -1,6 +1,7 @@
 package es.miw.tfm.invierte.core.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import es.miw.tfm.invierte.core.domain.model.enums.Flag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,14 +12,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FinancialBonusType {
+public class PropertyFeature {
 
   private Integer id;
 
-  private String name;
+  private Flag featureValue;
 
-  private String dataType;
-
-  private Boolean required;
+  private Feature feature;
 
 }

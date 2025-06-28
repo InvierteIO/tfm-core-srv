@@ -8,6 +8,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -87,16 +88,18 @@ public class SubProjectEntity {
   @JoinColumn(name = "location_code_id", referencedColumnName = "id")
   private LocationCodeEntity locationCode;
 
-  @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL, orphanRemoval = true,
+      fetch = FetchType.EAGER)
   List<SubProjectBankEntity> subProjectBanks = new ArrayList<>();
 
-  @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL, orphanRemoval = true,
+      fetch = FetchType.EAGER)
   List<SubProjectBonusTypeEntity> subProjectBonusTypes = new ArrayList<>();
 
   @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL, orphanRemoval = true)
   List<SubProjectDocumentEntity> subProjectDocumentEntities;
 
-  @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL)
   List<SubProjectPropertyGroupEntity> subProjectPropertyGroups;
 
   @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -113,6 +116,27 @@ public class SubProjectEntity {
   public SubProjectEntity(ProjectStage projectStage, ProjectEntity project) {
     BeanUtils.copyProperties(projectStage, this);
     this.project = project;
+
+    Optional.ofNullable(projectStage.getStageBanks())
+        .orElseGet(ArrayList::new)
+        .forEach(stageBank -> this.subProjectBanks.add(
+            new SubProjectBankEntity(stageBank, this)));
+
+    Optional.ofNullable(projectStage.getStageBonusTypes())
+        .orElseGet(ArrayList::new)
+        .forEach(stageBonusType -> this.subProjectBonusTypes.add(
+            new SubProjectBonusTypeEntity(stageBonusType, this)));
+  }
+
+  /**
+   * Constructs a SubProjectEntity from a domain ProjectStage object.
+   * Copies properties from the domain model and initializes related sub-entities
+   * (banks and bonus types) from the corresponding domain lists.
+   *
+   * @param projectStage the domain ProjectStage to copy properties from
+   */
+  public SubProjectEntity(ProjectStage projectStage) {
+    BeanUtils.copyProperties(projectStage, this);
 
     Optional.ofNullable(projectStage.getStageBanks())
         .orElseGet(ArrayList::new)

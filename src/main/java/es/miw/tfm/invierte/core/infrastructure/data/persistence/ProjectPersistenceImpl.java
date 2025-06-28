@@ -60,4 +60,15 @@ public class ProjectPersistenceImpl  implements ProjectPersistence {
         .map(ProjectEntity::toProject);
   }
 
+  @Override
+  public Mono<Project> readByTaxIdentificationNumberAndId(String taxIdentificationNumber,
+      Integer projectId) {
+    return Mono.just(this.projectRepository
+            .findByTaxIdentificationNumberAndId(taxIdentificationNumber, projectId))
+        .switchIfEmpty(Mono.error(
+            new NotFoundException("Non existent Project with id: " + projectId
+                + " for taxIdentificationNumber: " + taxIdentificationNumber)))
+        .map(ProjectEntity::toProject);
+  }
+
 }
