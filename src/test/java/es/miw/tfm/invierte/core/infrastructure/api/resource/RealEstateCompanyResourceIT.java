@@ -18,7 +18,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @ApiTestConfig
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @Tag("IntegrationTest")
-class RealStateCompanyResourceIT extends BaseContainerIntegration {
+class RealEstateCompanyResourceIT extends BaseContainerIntegration {
 
   private static final String TAX_IDENTIFICATION_NUMBER = "123456789";
 
@@ -50,7 +50,7 @@ class RealStateCompanyResourceIT extends BaseContainerIntegration {
         .taxIdentificationNumber(TAX_IDENTIFICATION_NUMBER)
         .build();
 
-    this.webTestClient.post().uri(RealStateCompanyResource.REAL_STATE_COMPANIES)
+    this.webTestClient.post().uri(RealEstateCompanyResource.REAL_STATE_COMPANIES)
         .bodyValue(realStateCompany)
         .exchange()
         .expectStatus().isOk()
@@ -75,7 +75,7 @@ class RealStateCompanyResourceIT extends BaseContainerIntegration {
         .taxIdentificationNumber(TAX_IDENTIFICATION_NUMBER)
         .build();
 
-    this.webTestClient.put().uri(RealStateCompanyResource.REAL_STATE_COMPANIES + RealStateCompanyResource.REAL_STATE_TAX_IDENTIFICATION_NUMBER,
+    this.webTestClient.put().uri(RealEstateCompanyResource.REAL_STATE_COMPANIES + RealEstateCompanyResource.REAL_STATE_TAX_IDENTIFICATION_NUMBER,
             TAX_IDENTIFICATION_NUMBER)
         .header("Authorization", bearer)
         .bodyValue(realStateCompany)
@@ -98,7 +98,7 @@ class RealStateCompanyResourceIT extends BaseContainerIntegration {
         .createToken("test@test.com", "test", "OWNER", TAX_IDENTIFICATION_NUMBER);
     String bearer = "Bearer " + token;
 
-    this.webTestClient.get().uri(RealStateCompanyResource.REAL_STATE_COMPANIES + RealStateCompanyResource.REAL_STATE_TAX_IDENTIFICATION_NUMBER,
+    this.webTestClient.get().uri(RealEstateCompanyResource.REAL_STATE_COMPANIES + RealEstateCompanyResource.REAL_STATE_TAX_IDENTIFICATION_NUMBER,
             TAX_IDENTIFICATION_NUMBER)
         .header("Authorization", bearer)
         .exchange()
@@ -119,8 +119,8 @@ class RealStateCompanyResourceIT extends BaseContainerIntegration {
                 .createToken("test@test.com", "test", "OWNER", TAX_IDENTIFICATION_NUMBER);
         String bearer = "Bearer " + token;
 
-        this.webTestClient.get().uri(RealStateCompanyResource.REAL_STATE_COMPANIES
-            + RealStateCompanyResource.REAL_STATE_TAX_IDENTIFICATION_NUMBER + RealStateCompanyResource.PROFILE,
+        this.webTestClient.get().uri(RealEstateCompanyResource.REAL_STATE_COMPANIES
+            + RealEstateCompanyResource.REAL_STATE_TAX_IDENTIFICATION_NUMBER + RealEstateCompanyResource.PROFILE,
             TAX_IDENTIFICATION_NUMBER)
             .header("Authorization", bearer)
             .exchange()

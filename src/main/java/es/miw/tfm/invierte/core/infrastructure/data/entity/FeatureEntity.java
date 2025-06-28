@@ -1,5 +1,6 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
+import es.miw.tfm.invierte.core.domain.model.Feature;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 /**
  * JPA entity representing a feature that can be associated with property groups.
@@ -43,4 +45,14 @@ public class FeatureEntity {
   @OneToMany(mappedBy = "feature", cascade = CascadeType.ALL, orphanRemoval = true)
   List<PropertyGroupFeatureEntity> propertyGroupFeatureEntities;
 
+  /**
+   * Converts this entity to its corresponding domain model {@link Feature}.
+   *
+   * @return the domain model representation of this entity
+   */
+  public Feature toFeature() {
+    Feature feature = new Feature();
+    BeanUtils.copyProperties(this, feature);
+    return feature;
+  }
 }

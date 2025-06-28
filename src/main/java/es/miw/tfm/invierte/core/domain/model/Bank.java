@@ -18,5 +18,4 @@ public class Bank {
 
   private String name;
 
-  private FinancialEntityType financialEntityType;
 }

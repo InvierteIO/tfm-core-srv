@@ -30,9 +30,9 @@ import reactor.core.publisher.Mono;
 
 @Log4j2
 @Rest
-@RequestMapping(RealStateCompanyProjectResource.COMPANY_PROJECT)
+@RequestMapping(RealEstateCompanyProjectResource.COMPANY_PROJECT)
 @RequiredArgsConstructor
-public class RealStateCompanyProjectResource {
+public class RealEstateCompanyProjectResource {
 
   public static final String REAL_STATE_COMPANIES = "/real-estate-companies";
 
