@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import es.miw.tfm.invierte.core.domain.model.enums.CommercializationCycle;
 import es.miw.tfm.invierte.core.domain.model.enums.SubProjectStatus;
@@ -33,12 +34,14 @@ public class ProjectStage {
 
   private List<StageBonusType> stageBonusTypes = new ArrayList<>();
 
-  private List<StageInfraInstallation> stageInfraInstallations;
+  private List<StageInfraInstallation> stageInfraInstallations = new ArrayList<>();
 
-  private List<StageCatalogDetail> stageCatalogDetails;
+  private List<StageCatalogDetail> stageCatalogDetails = new ArrayList<>();
 
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private LocalDate endDate;
 
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private LocalDate handOverDate;
 
 }

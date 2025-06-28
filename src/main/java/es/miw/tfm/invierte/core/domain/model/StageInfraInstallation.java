@@ -15,7 +15,9 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StageInfraInstallation {
 
-  private List<InfraInstallation> infraInstallations;
+  private Integer id;
+
+  private InfraInstallation infraInstallation;
 
   private String fieldValue;
 }

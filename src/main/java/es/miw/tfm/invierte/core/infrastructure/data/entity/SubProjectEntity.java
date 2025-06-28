@@ -102,8 +102,14 @@ public class SubProjectEntity {
   @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL)
   List<SubProjectPropertyGroupEntity> subProjectPropertyGroups;
 
-  @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL, orphanRemoval = true)
-  List<SubProjectInfrastructureInstallationEntity> subProjectInfrastructureInstallationEntities;
+  @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL, orphanRemoval = true,
+      fetch = FetchType.EAGER)
+  List<SubProjectInfrastructureInstallationEntity> subProjectInfrastructureInstallationEntities
+      = new ArrayList<>();
+
+  @OneToMany(mappedBy = "subProject", cascade = CascadeType.ALL, orphanRemoval = true,
+      fetch = FetchType.EAGER)
+  List<SubProjectCatalogDetailEntity> subProjectCatalogDetailEntities = new ArrayList<>();
 
   /**
    * Constructs a SubProjectEntity from a domain ProjectStage object and its parent ProjectEntity.
@@ -126,6 +132,18 @@ public class SubProjectEntity {
         .orElseGet(ArrayList::new)
         .forEach(stageBonusType -> this.subProjectBonusTypes.add(
             new SubProjectBonusTypeEntity(stageBonusType, this)));
+
+    Optional.ofNullable(projectStage.getStageInfraInstallations())
+        .orElseGet(ArrayList::new)
+        .forEach(stageInfraInstallation ->
+            this.subProjectInfrastructureInstallationEntities.add(
+            new SubProjectInfrastructureInstallationEntity(stageInfraInstallation, this)));
+
+    Optional.ofNullable(projectStage.getStageCatalogDetails())
+        .orElseGet(ArrayList::new)
+        .forEach(stageCatalogDetail ->
+            this.subProjectCatalogDetailEntities.add(
+            new SubProjectCatalogDetailEntity(stageCatalogDetail, this)));
   }
 
   /**
@@ -147,6 +165,7 @@ public class SubProjectEntity {
         .orElseGet(ArrayList::new)
         .forEach(stageBonusType -> this.subProjectBonusTypes.add(
             new SubProjectBonusTypeEntity(stageBonusType, this)));
+
   }
 
   /**
@@ -170,6 +189,20 @@ public class SubProjectEntity {
         .orElseGet(ArrayList::new)
         .forEach(subProjectBonusTypeEntity -> {
           projectStage.getStageBonusTypes().add(subProjectBonusTypeEntity.toStageBonusTypes());
+        });
+
+    Optional.ofNullable(this.subProjectInfrastructureInstallationEntities)
+        .orElseGet(ArrayList::new)
+        .forEach(subProjectInfrastructureInstallationEntity -> {
+          projectStage.getStageInfraInstallations().add(
+              subProjectInfrastructureInstallationEntity.toSubProjectInfrastructureInstallation());
+        });
+
+    Optional.ofNullable(this.subProjectCatalogDetailEntities)
+        .orElseGet(ArrayList::new)
+        .forEach(subProjectCatalogDetailEntity -> {
+          projectStage.getStageCatalogDetails().add(
+              subProjectCatalogDetailEntity.toSubProjectCatalogDetail());
         });
 
     return projectStage;

@@ -13,7 +13,11 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StageCatalogDetail {
 
+  private Integer id;
+
   private String situation;
+
+  private CatalogDetail catalogDetail;
 
   private InfraInstallation infraInstallation;
 }

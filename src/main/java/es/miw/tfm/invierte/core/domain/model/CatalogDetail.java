@@ -19,4 +19,8 @@ public class CatalogDetail {
 
   private String name;
 
+  private String description;
+
+  private String other;
+
 }

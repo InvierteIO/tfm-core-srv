@@ -1,5 +1,6 @@
 package es.miw.tfm.invierte.core.domain.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,6 +24,8 @@ public class Catalog {
 
   private String description;
 
-  private List<CatalogDetail> catalogDetails;
+  private String other;
+
+  private List<CatalogDetail> catalogDetails = new ArrayList<>();
 
 }
