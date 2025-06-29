@@ -1,18 +1,25 @@
 package es.miw.tfm.invierte.core.infrastructure.api.resource;
 
+import es.miw.tfm.invierte.core.domain.exception.BadRequestException;
 import es.miw.tfm.invierte.core.domain.model.Project;
+import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
 import es.miw.tfm.invierte.core.domain.service.ProjectService;
 import es.miw.tfm.invierte.core.infrastructure.api.Rest;
+import es.miw.tfm.invierte.core.infrastructure.api.util.FileUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import reactor.core.publisher.Mono;
 
 /**
@@ -43,6 +50,10 @@ public class RealEstateCompanyProjectResource {
 
   public static final String PROJECT_ID = "/{projectId}";
 
+  public static final String DOCUMENT_ID = "/{documentId}";
+
+  private static final String DOCUMENTS = "/documents";
+
   private final ProjectService projectService;
 
   @PostMapping(produces = {"application/json"})
@@ -67,6 +78,57 @@ public class RealEstateCompanyProjectResource {
       @PathVariable Integer projectId) {
     log.info("Read project {} for taxIdentificationNumber: {}", projectId, taxIdentificationNumber);
     return this.projectService.readById(projectId);
+  }
+
+  /**
+   * Creates and persists a new document for the specified project.
+   * Validates the uploaded file type, sets document metadata, and delegates
+   * persistence to the ProjectService. Only JPG, PNG, and PDF files are allowed.
+   *
+   * @param taxIdentificationNumber the tax identification number of the company
+   * @param projectId the ID of the project to associate the document with
+   * @param file the file to upload and associate with the document
+   * @param projectDocument the project document metadata to persist
+   * @return a Mono emitting the persisted ProjectDocument, or a bad request
+   *         response if the file type is not allowed
+   */
+  @PostMapping(PROJECT_ID + DOCUMENTS)
+  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
+  public Mono<ProjectDocument> createDocument(@PathVariable String taxIdentificationNumber,
+      @PathVariable Integer projectId,
+      @RequestPart("file") FilePart file,
+      @RequestPart("projectDocument") String projectDocument
+  ) {
+    log.info("Create document for project {} and taxIdentificationNumber: {}",
+        projectId, taxIdentificationNumber);
+
+    if (!FileUtil.isAllowedFile(file)) {
+      return Mono.error(new BadRequestException("File has not allowed format"));
+    }
+
+    final var projectDocumentDto = FileUtil.parseJsonToProjectDocument(projectDocument);
+    return this.projectService.createDocument(projectId, projectDocumentDto, file);
+  }
+
+  /**
+   * Deletes a document associated with the specified project.
+   * Delegates the deletion to the ProjectService. Only users with the OWNER
+   * role for the company can perform this operation.
+   *
+   * @param taxIdentificationNumber the tax identification number of the company
+   * @param projectId the ID of the project containing the document
+   * @param documentId the ID of the document to delete
+   * @return a Mono signaling completion when the document is deleted
+   */
+  @DeleteMapping(PROJECT_ID + DOCUMENTS + DOCUMENT_ID)
+  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
+  public Mono<Void> deleteDocument(@PathVariable String taxIdentificationNumber,
+      @PathVariable Integer projectId,
+      @PathVariable Integer documentId
+  ) {
+    log.info("Delete document {} for project {} and taxIdentificationNumber: {}",
+        documentId, projectId, taxIdentificationNumber);
+    return this.projectService.deleteDocument(documentId);
   }
 
 
