@@ -4,6 +4,7 @@ import es.miw.tfm.invierte.core.domain.model.Project;
 import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -30,4 +31,6 @@ public interface ProjectPersistence {
   Mono<ProjectDocument> createDocument(Integer projectId, @Valid ProjectDocument projectDocument);
 
   Mono<Void> deleteDocument(Integer documentId);
+
+  Flux<Project> readAll();
 }

@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -110,6 +111,12 @@ public class ProjectPersistenceImpl  implements ProjectPersistence {
     return Mono.fromRunnable(() -> {
       this.projectDocumentRepository.deleteById(documentId);
     });
+  }
+
+  @Override
+  public Flux<Project> readAll() {
+    return Flux.fromIterable(this.projectRepository.findAll())
+        .map(ProjectEntity::toProject);
   }
 
 }

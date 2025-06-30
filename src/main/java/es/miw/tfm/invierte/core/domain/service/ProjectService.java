@@ -2,12 +2,16 @@ package es.miw.tfm.invierte.core.domain.service;
 
 import es.miw.tfm.invierte.core.domain.model.Project;
 import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
+import es.miw.tfm.invierte.core.domain.model.dto.ProjectSummaryDto;
+import es.miw.tfm.invierte.core.domain.model.enums.ProjectStatus;
+import es.miw.tfm.invierte.core.domain.model.enums.PropertyCategory;
 import es.miw.tfm.invierte.core.domain.persistence.FileUploadPersistence;
 import es.miw.tfm.invierte.core.domain.persistence.ProjectPersistence;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -22,6 +26,8 @@ import reactor.core.publisher.Mono;
 public class ProjectService {
 
   private final ProjectPersistence projectPersistence;
+
+  private final PropertyGroupService propertyGroupService;
 
   private final FileUploadPersistence fileUploadPersistence;
 
@@ -61,4 +67,46 @@ public class ProjectService {
   public Mono<Void> deleteDocument(Integer documentId) {
     return this.projectPersistence.deleteDocument(documentId);
   }
+
+  public Flux<ProjectSummaryDto> findProjectSummariesByPropertyTypeAndStatus(
+      String propertyType, String projectStatus, String taxIdentificationNumber) {
+
+    final var projectStatusEnum = ProjectStatus.valueOf(projectStatus);
+    final var propertyCategoryEnum = PropertyCategory.valueOf(propertyType);
+
+    return projectPersistence.readAll()
+        .filter(project -> taxIdentificationNumber.equals(project.getTaxIdentificationNumber()))
+        .filter(project -> projectStatusEnum.equals(project.getStatus()))
+        .flatMap(project ->
+            propertyGroupService.readByTaxIdentificationNumberAndProjectId(
+                    project.getTaxIdentificationNumber(), project.getId()
+                )
+                .collectList()
+                .filter(propertyGroups ->
+                    propertyGroups.stream()
+                        .anyMatch(pg -> propertyCategoryEnum.equals(pg.getPropertyGroup().getPropertyCategory()))
+                )
+                .map(propertyGroups -> {
+                  ProjectSummaryDto dto = new ProjectSummaryDto();
+                  dto.setId(project.getId());
+                  dto.setName(project.getName());
+                  dto.setAddress(project.getOfficeAddress());
+                  dto.setStages(project.getStages());
+                  dto.setStatus(project.getStatus());
+
+                  for (var group : propertyGroups) {
+                    final var category = group.getPropertyGroup().getPropertyCategory();
+                    int countApartments = PropertyCategory.APARTMENT.equals(category) ? group.getProperties().size() : 0;
+                    int countLands = PropertyCategory.LAND.equals(category) ? group.getProperties().size() : 0;
+                    int countHouses = PropertyCategory.HOUSE.equals(category) ? group.getProperties().size() : 0;
+                    double areaTotal = group.getPropertyGroup().getArea() != null ? group.getPropertyGroup().getArea() : 0.0;
+
+                    dto.acumularTotales(countApartments, countLands, countHouses, areaTotal);
+                  }
+                  return dto;
+                })
+        );
+  }
+
+
 }

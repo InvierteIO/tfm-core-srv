@@ -3,6 +3,7 @@ package es.miw.tfm.invierte.core.infrastructure.api.resource;
 import es.miw.tfm.invierte.core.domain.exception.BadRequestException;
 import es.miw.tfm.invierte.core.domain.model.Project;
 import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
+import es.miw.tfm.invierte.core.domain.model.dto.ProjectSummaryDto;
 import es.miw.tfm.invierte.core.domain.service.ProjectService;
 import es.miw.tfm.invierte.core.infrastructure.api.Rest;
 import es.miw.tfm.invierte.core.infrastructure.api.util.FileUtil;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -53,6 +57,8 @@ public class RealEstateCompanyProjectResource {
   public static final String DOCUMENT_ID = "/{documentId}";
 
   private static final String DOCUMENTS = "/documents";
+
+  private static final String SUMMARY = "/summary";
 
   private final ProjectService projectService;
 
@@ -131,5 +137,12 @@ public class RealEstateCompanyProjectResource {
     return this.projectService.deleteDocument(documentId);
   }
 
+  @GetMapping(SUMMARY)
+  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
+  public Flux<ProjectSummaryDto> read(@PathVariable String taxIdentificationNumber,
+      @RequestParam String propertyType, @RequestParam String projectStatus ) {
+    log.info("Read project summary for taxIdentificationNumber: {}", taxIdentificationNumber);
+    return this.projectService.findProjectSummariesByPropertyTypeAndStatus(propertyType, projectStatus, taxIdentificationNumber);
+  }
 
 }
