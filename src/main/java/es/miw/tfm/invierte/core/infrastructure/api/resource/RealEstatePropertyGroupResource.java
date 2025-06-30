@@ -1,13 +1,18 @@
 package es.miw.tfm.invierte.core.infrastructure.api.resource;
 
 
+import es.miw.tfm.invierte.core.domain.exception.BadRequestException;
+import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
+import es.miw.tfm.invierte.core.domain.model.PropertyGroupDocument;
 import es.miw.tfm.invierte.core.domain.model.SubProjectPropertyGroup;
 import es.miw.tfm.invierte.core.domain.service.PropertyGroupService;
 import es.miw.tfm.invierte.core.infrastructure.api.Rest;
+import es.miw.tfm.invierte.core.infrastructure.api.util.FileUtil;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -47,6 +53,10 @@ public class RealEstatePropertyGroupResource {
   public static final String ASSIGN = "/assign";
 
   public static final String DUPLICATE = "/duplicate";
+
+  public static final String DOCUMENTS = "/documents";
+
+  public static final String DOCUMENT_ID = "/{documentId}";
 
   public static final String PROJECT_ID = "/{projectId}";
 
@@ -194,6 +204,63 @@ public class RealEstatePropertyGroupResource {
     log.info("update property-group: {} for taxIdentificationNumber {}",
         subProjectPropertyGroupList, taxIdentificationNumber);
     return this.propertyGroupService.update(subProjectPropertyGroupList);
+  }
+
+  /**
+   * Creates and persists a new document for the specified property group.
+   * Validates the uploaded file type, parses the document metadata from JSON,
+   * and delegates persistence to the PropertyGroupService. Only JPG, PNG, and PDF
+   * files are allowed.
+   *
+   * @param taxIdentificationNumber the tax identification number of the company
+   * @param propertyGroupId the ID of the property group to associate the document with
+   * @param file the file to upload and associate with the document
+   * @param propertyGroupDocument the JSON string representing the document metadata
+   * @return a {@link Mono} emitting the persisted {@link PropertyGroupDocument}, or a bad request
+   *         response if the file type is not allowed
+   * @author denilssonmn
+   */
+  @PostMapping(PROPERTY_GROUP + PROPERTY_GROUP_ID + DOCUMENTS)
+  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
+  public Mono<PropertyGroupDocument> createDocument(@PathVariable String taxIdentificationNumber,
+      @PathVariable Integer propertyGroupId,
+      @RequestPart("file") FilePart file,
+      @RequestPart("propertyGroupDocument") String propertyGroupDocument
+  ) {
+    log.info("Create document for property group {} and taxIdentificationNumber: {}",
+        propertyGroupId, taxIdentificationNumber);
+
+    if (!FileUtil.isAllowedFile(file)) {
+      return Mono.error(new BadRequestException("File has not allowed format"));
+    }
+
+    final var propertyGroupDocumentDto = FileUtil.parseJsonToPropertyGroupDocument(
+        propertyGroupDocument);
+    return this.propertyGroupService. createDocument(propertyGroupId,
+        propertyGroupDocumentDto, file);
+  }
+
+  /**
+   * Deletes a document associated with the specified property group.
+   * Only users with the OWNER role for the company can perform this operation.
+   * Delegates the deletion to the {@link PropertyGroupService#deleteDocument(Integer)}.
+   *
+   * @param taxIdentificationNumber the tax identification number of the company
+   * @param propertyGroupId the ID of the property group containing the document
+   * @param documentId the ID of the document to delete
+   * @return a {@link Mono} signaling completion when the document is deleted
+   * @author denilssonmn
+   */
+  @DeleteMapping(PROPERTY_GROUP + PROPERTY_GROUP_ID + DOCUMENTS + DOCUMENT_ID)
+  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
+  public Mono<Void> deleteDocument(@PathVariable String taxIdentificationNumber,
+      @PathVariable Integer propertyGroupId,
+      @PathVariable Integer documentId
+  ) {
+    log.info("Delete property-group document {} for property group {}"
+            + " and taxIdentificationNumber: {}",
+        documentId, propertyGroupId, taxIdentificationNumber);
+    return this.propertyGroupService.deleteDocument(documentId);
   }
 
 }

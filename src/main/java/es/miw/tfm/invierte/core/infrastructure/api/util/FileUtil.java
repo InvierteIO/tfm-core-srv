@@ -2,6 +2,7 @@ package es.miw.tfm.invierte.core.infrastructure.api.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
+import es.miw.tfm.invierte.core.domain.model.PropertyGroupDocument;
 import java.io.IOException;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,11 @@ public class FileUtil {
     return filename.endsWith(".jpg")
         || filename.endsWith(".jpeg")
         || filename.endsWith(".png")
-        || filename.endsWith(".pdf");
+        || filename.endsWith(".pdf")
+        || filename.endsWith(".kml")
+        || filename.endsWith(".kmz")
+        || filename.endsWith(".xls")
+        || filename.endsWith(".xlsx");
   }
 
   /**
@@ -51,6 +56,26 @@ public class FileUtil {
       log.info("json project document: {}", json);
       ObjectMapper objectMapper = new ObjectMapper();
       return objectMapper.readValue(json, ProjectDocument.class);
+    } catch (IOException e) {
+      throw new IllegalArgumentException("Invalid JSON format");
+    }
+  }
+
+  /**
+   * Parses the provided JSON string into a PropertyGroupDocument object.
+   * Uses Jackson's ObjectMapper for deserialization. Throws an
+   * IllegalArgumentException if the JSON format is invalid.
+   *
+   * @param json the JSON string representing a PropertyGroupDocument
+   * @return the deserialized PropertyGroupDocument object
+   * @throws IllegalArgumentException if the JSON is invalid
+   * @author denilssonmn
+   */
+  public static PropertyGroupDocument parseJsonToPropertyGroupDocument(String json) {
+    try {
+      log.info("json property group  document: {}", json);
+      ObjectMapper objectMapper = new ObjectMapper();
+      return objectMapper.readValue(json, PropertyGroupDocument.class);
     } catch (IOException e) {
       throw new IllegalArgumentException("Invalid JSON format");
     }

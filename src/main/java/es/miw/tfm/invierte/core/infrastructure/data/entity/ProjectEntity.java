@@ -55,7 +55,7 @@ public class ProjectEntity {
   @Column(length = 200)
   private String supervisor;
 
-  @Column(length = 10)
+  @Column(length = 12)
   @Enumerated(EnumType.STRING)
   private ProjectStatus status;
 

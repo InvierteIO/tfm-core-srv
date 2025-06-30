@@ -1,6 +1,7 @@
 package es.miw.tfm.invierte.core.infrastructure.data.dao;
 
 import es.miw.tfm.invierte.core.infrastructure.data.entity.PropertyEntity;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -14,5 +15,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @see PropertyEntity
  */
 public interface PropertyRepository extends JpaRepository<PropertyEntity, Integer> {
+
+  List<PropertyEntity> findBySubProjectPropertyGroupId(Integer subProjectPropertyGroupId);
 
 }
