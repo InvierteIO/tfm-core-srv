@@ -68,6 +68,18 @@ public class ProjectService {
     return this.projectPersistence.deleteDocument(documentId);
   }
 
+  /**
+   * Retrieves a list of {@link ProjectSummaryDto} objects filtered by property type,
+   * project status, and company tax identification number.
+   * Aggregates project and property group data, including counts of apartments, lands,
+   * houses, and total area, for each matching project.
+   *
+   * @param propertyType the type of property to filter by (e.g., APARTMENT, LAND, HOUSE)
+   * @param projectStatus the status of the project to filter by
+   * @param taxIdentificationNumber the tax identification number of the company
+   * @return a {@link Flux} emitting the filtered {@link ProjectSummaryDto} objects
+   * @author denilssonmn
+   */
   public Flux<ProjectSummaryDto> findProjectSummariesByPropertyTypeAndStatus(
       String propertyType, String projectStatus, String taxIdentificationNumber) {
 
@@ -84,7 +96,8 @@ public class ProjectService {
                 .collectList()
                 .filter(propertyGroups ->
                     propertyGroups.stream()
-                        .anyMatch(pg -> propertyCategoryEnum.equals(pg.getPropertyGroup().getPropertyCategory()))
+                        .anyMatch(pg -> propertyCategoryEnum.equals(
+                            pg.getPropertyGroup().getPropertyCategory()))
                 )
                 .map(propertyGroups -> {
                   ProjectSummaryDto dto = new ProjectSummaryDto();
@@ -96,10 +109,14 @@ public class ProjectService {
 
                   for (var group : propertyGroups) {
                     final var category = group.getPropertyGroup().getPropertyCategory();
-                    int countApartments = PropertyCategory.APARTMENT.equals(category) ? group.getProperties().size() : 0;
-                    int countLands = PropertyCategory.LAND.equals(category) ? group.getProperties().size() : 0;
-                    int countHouses = PropertyCategory.HOUSE.equals(category) ? group.getProperties().size() : 0;
-                    double areaTotal = group.getPropertyGroup().getArea() != null ? group.getPropertyGroup().getArea() : 0.0;
+                    int countApartments = PropertyCategory.APARTMENT.equals(category)
+                        ? group.getProperties().size() : 0;
+                    int countLands = PropertyCategory.LAND.equals(category)
+                        ? group.getProperties().size() : 0;
+                    int countHouses = PropertyCategory.HOUSE.equals(category)
+                        ? group.getProperties().size() : 0;
+                    double areaTotal = group.getPropertyGroup().getArea() != null
+                        ? group.getPropertyGroup().getArea() : 0.0;
 
                     dto.acumularTotales(countApartments, countLands, countHouses, areaTotal);
                   }

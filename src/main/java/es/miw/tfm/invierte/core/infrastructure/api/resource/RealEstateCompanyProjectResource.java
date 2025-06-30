@@ -87,6 +87,26 @@ public class RealEstateCompanyProjectResource {
   }
 
   /**
+   * Retrieves a list of {@link ProjectSummaryDto} objects for the specified company,
+   * filtered by property type and project status.
+   * Only users with the OWNER role for the company can access this endpoint.
+   *
+   * @param taxIdentificationNumber the tax identification number of the company
+   * @param propertyType the type of property to filter by (e.g., APARTMENT, LAND, HOUSE)
+   * @param projectStatus the status of the project to filter by
+   * @return a {@link Flux} emitting the filtered {@link ProjectSummaryDto} objects
+   * @author denilssonmn
+   */
+  @GetMapping(SUMMARY)
+  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
+  public Flux<ProjectSummaryDto> read(@PathVariable String taxIdentificationNumber,
+      @RequestParam String propertyType, @RequestParam String projectStatus) {
+    log.info("Read project summary for taxIdentificationNumber: {}", taxIdentificationNumber);
+    return this.projectService.findProjectSummariesByPropertyTypeAndStatus(propertyType,
+        projectStatus, taxIdentificationNumber);
+  }
+
+  /**
    * Creates and persists a new document for the specified project.
    * Validates the uploaded file type, sets document metadata, and delegates
    * persistence to the ProjectService. Only JPG, PNG, and PDF files are allowed.
@@ -135,14 +155,6 @@ public class RealEstateCompanyProjectResource {
     log.info("Delete document {} for project {} and taxIdentificationNumber: {}",
         documentId, projectId, taxIdentificationNumber);
     return this.projectService.deleteDocument(documentId);
-  }
-
-  @GetMapping(SUMMARY)
-  @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
-  public Flux<ProjectSummaryDto> read(@PathVariable String taxIdentificationNumber,
-      @RequestParam String propertyType, @RequestParam String projectStatus ) {
-    log.info("Read project summary for taxIdentificationNumber: {}", taxIdentificationNumber);
-    return this.projectService.findProjectSummariesByPropertyTypeAndStatus(propertyType, projectStatus, taxIdentificationNumber);
   }
 
 }
