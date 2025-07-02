@@ -100,15 +100,6 @@ public class PropertyGroupService {
 
   }
 
-  private void assertSubProjectExists(SubProjectPropertyGroup subProjectPropertyGroup) {
-    final var stage = this.subProjectPersistence
-        .readById(subProjectPropertyGroup.getStage().getId());
-    if (Objects.isNull(stage)) {
-      throw new NotFoundException("Non existent SubProject with id: "
-          + subProjectPropertyGroup.getStage().getId());
-    }
-  }
-
   /**
    * Retrieves all {@link SubProjectPropertyGroup} associations for a given project,
    * identified by tax identification number and project ID.

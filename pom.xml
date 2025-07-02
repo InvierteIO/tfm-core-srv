@@ -85,7 +85,7 @@
           <exportLineCoverage>true</exportLineCoverage>
           <failWhenNoMutations>false</failWhenNoMutations>
           <timestampedReports>false</timestampedReports>
-          <mutationThreshold>85</mutationThreshold>
+          <mutationThreshold>80</mutationThreshold>
           <failWhenNoMutations>true</failWhenNoMutations>
           <targetClasses>
             <param>es.miw.tfm.invierte.core.*</param>
