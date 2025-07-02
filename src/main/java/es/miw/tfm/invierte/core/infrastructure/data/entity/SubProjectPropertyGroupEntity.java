@@ -1,15 +1,20 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
 import es.miw.tfm.invierte.core.domain.model.SubProjectPropertyGroup;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
@@ -48,6 +53,15 @@ public class SubProjectPropertyGroupEntity {
   @JoinColumn(name = "property_group_id", referencedColumnName = "id")
   private PropertyGroupEntity propertyGroup;
 
+  @OneToMany(mappedBy = "subProjectPropertyGroup", fetch = FetchType.EAGER,
+      cascade = CascadeType.REMOVE, orphanRemoval = true)
+  private List<PropertyGroupDocumentEntity> propertyGroupDocumentEntities = new ArrayList<>();
+
+  @OneToMany(mappedBy = "subProjectPropertyGroup", fetch = FetchType.EAGER,
+      cascade = CascadeType.REMOVE, orphanRemoval = true)
+  private List<PropertyEntity> propertyEntities = new ArrayList<>();
+
+
   /**
    * Constructs a SubProjectPropertyGroupEntity associating a subproject with a property group.
    * Initializes the creation date to the current time and sets the related entities.
@@ -79,6 +93,20 @@ public class SubProjectPropertyGroupEntity {
     Optional.ofNullable(this.propertyGroup)
         .map(PropertyGroupEntity::toPropertyGroup)
         .ifPresent(subProjectPropertyGroup::setPropertyGroup);
+
+    Optional.ofNullable(this.propertyGroupDocumentEntities)
+        .orElseGet(ArrayList::new)
+        .forEach(propertyGroupDocumentEntity -> {
+          subProjectPropertyGroup.getPropertyGroupDocuments().add(
+              propertyGroupDocumentEntity.toPropertyGroupDocument());
+        });
+
+    Optional.ofNullable(this.propertyEntities)
+        .orElseGet(ArrayList::new)
+        .forEach(propertyEntity -> {
+          subProjectPropertyGroup.getProperties().add(
+              propertyEntity.toProperty());
+        });
 
     return subProjectPropertyGroup;
   }

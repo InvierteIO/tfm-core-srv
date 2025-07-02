@@ -1,7 +1,8 @@
 package es.miw.tfm.invierte.core.domain.persistence;
 
-import es.miw.tfm.invierte.core.domain.model.Membership;
 import es.miw.tfm.invierte.core.domain.model.Project;
+import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,4 +27,10 @@ public interface ProjectPersistence {
 
   Mono<Project> readByTaxIdentificationNumberAndId(String taxIdentificationNumber,
       Integer projectId);
+
+  Mono<ProjectDocument> createDocument(Integer projectId, @Valid ProjectDocument projectDocument);
+
+  Mono<Void> deleteDocument(Integer documentId);
+
+  Flux<Project> readAll();
 }

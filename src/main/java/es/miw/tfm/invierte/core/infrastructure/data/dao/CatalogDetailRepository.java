@@ -1,6 +1,7 @@
 package es.miw.tfm.invierte.core.infrastructure.data.dao;
 
 import es.miw.tfm.invierte.core.infrastructure.data.entity.CatalogDetailEntity;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -10,5 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author denilssonmn
  */
 public interface CatalogDetailRepository extends JpaRepository<CatalogDetailEntity, Integer> {
+
+  Optional<CatalogDetailEntity> findByCode(String code);
 
 }

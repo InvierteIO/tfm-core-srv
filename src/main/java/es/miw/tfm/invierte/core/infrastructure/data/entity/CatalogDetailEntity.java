@@ -57,6 +57,12 @@ public class CatalogDetailEntity {
       orphanRemoval = true)
   List<SubProjectCatalogDetailEntity> subProjectCatalogDetailEntities;
 
+  @OneToMany(mappedBy = "catalogDetail")
+  List<ProjectDocumentEntity> projectDocuments;
+
+  @OneToMany(mappedBy = "catalogDetail")
+  List<PropertyGroupDocumentEntity> propertyGroupDocumentEntities;
+
   /**
    * Converts this entity to a domain CatalogDetail object. Copies properties
    * from the entity to the domain model.

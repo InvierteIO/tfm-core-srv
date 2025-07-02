@@ -39,6 +39,7 @@ public class SubProjectPropertyGroupPersistenceImpl implements SubProjectPropert
   private final SubProjectRepository subProjectRepository;
 
   @Override
+  @Transactional
   public Mono<SubProjectPropertyGroup> create(SubProjectPropertyGroup subProjectPropertyGroup) {
     final var propertyGroupEntity = getPropertyGroupEntity(subProjectPropertyGroup);
     final var subProjectEntity = getSubProjectEntity(subProjectPropertyGroup);
@@ -69,7 +70,7 @@ public class SubProjectPropertyGroupPersistenceImpl implements SubProjectPropert
           final var existsOtherPropertyGroupRelationShip =
               this.existsOtherPropertyGroupRelationShip(stagePropertyGroupId,
                   subProjectPropertyGroupEntity);
-          this.subProjectPropertyGroupRepository.deleteById(subProjectPropertyGroupEntity.getId());
+          this.subProjectPropertyGroupRepository.delete(subProjectPropertyGroupEntity);
           if (!existsOtherPropertyGroupRelationShip) {
             this.propertyGroupRepository.deleteById(subProjectPropertyGroupEntity.getId());
           }

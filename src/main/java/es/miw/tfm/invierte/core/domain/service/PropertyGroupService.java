@@ -2,14 +2,23 @@ package es.miw.tfm.invierte.core.domain.service;
 
 import es.miw.tfm.invierte.core.domain.exception.NotFoundException;
 import es.miw.tfm.invierte.core.domain.model.Project;
+import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
 import es.miw.tfm.invierte.core.domain.model.ProjectStage;
+import es.miw.tfm.invierte.core.domain.model.Property;
 import es.miw.tfm.invierte.core.domain.model.PropertyGroup;
+import es.miw.tfm.invierte.core.domain.model.PropertyGroupDocument;
 import es.miw.tfm.invierte.core.domain.model.SubProjectPropertyGroup;
+import es.miw.tfm.invierte.core.domain.persistence.FileUploadPersistence;
 import es.miw.tfm.invierte.core.domain.persistence.ProjectPersistence;
 import es.miw.tfm.invierte.core.domain.persistence.PropertyGroupPersistence;
 import es.miw.tfm.invierte.core.domain.persistence.SubProjectPersistence;
 import es.miw.tfm.invierte.core.domain.persistence.SubProjectPropertyGroupPersistence;
 import jakarta.validation.Valid;
+
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +27,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -41,6 +52,12 @@ public class PropertyGroupService {
   private final PropertyGroupPersistence propertyGroupPersistence;
 
   private final SubProjectPropertyGroupPersistence subProjectPropertyGroupPersistence;
+
+  private final FileUploadPersistence fileUploadPersistence;
+
+  private final PropertyService propertyService;
+
+  private static final String CATALOG_DETAIL_TEMPLATE_CODE = "022001";
 
   /**
    * Creates and persists a list of {@link SubProjectPropertyGroup} associations.
@@ -81,15 +98,6 @@ public class PropertyGroupService {
                 )
             );
 
-  }
-
-  private void assertSubProjectExists(SubProjectPropertyGroup subProjectPropertyGroup) {
-    final var stage = this.subProjectPersistence
-        .readById(subProjectPropertyGroup.getStage().getId());
-    if (Objects.isNull(stage)) {
-      throw new NotFoundException("Non existent SubProject with id: "
-          + subProjectPropertyGroup.getStage().getId());
-    }
   }
 
   /**
@@ -258,4 +266,88 @@ public class PropertyGroupService {
           .map(propertyGroup -> subProjectPropertyGroup)
         );
   }
+
+  /**
+   * Creates and persists a {@link PropertyGroupDocument} for the specified property group.
+   * Uploads the provided file, sets its path and filename in the document, and saves it.
+   * If the document's catalog detail matches the template code, imports properties from
+   * the Excel file, deletes existing properties for the group, and creates the new ones.
+   *
+   * @param propertyGroupId the identifier of the property group to associate the document with
+   * @param propertyGroupDocumentDto the document data to persist
+   * @param file the file to upload and associate with the document
+   * @return a {@link Mono} emitting the saved {@link PropertyGroupDocument}
+   * @author denilssonmn
+   */
+  public Mono<PropertyGroupDocument> createDocument(Integer propertyGroupId,
+      PropertyGroupDocument propertyGroupDocumentDto, FilePart file) {
+
+    return this.fileUploadPersistence.uploadFile(file)
+        .flatMap(url -> {
+          propertyGroupDocumentDto.setPath(url);
+          propertyGroupDocumentDto.setFilename(file.filename());
+          return this.propertyGroupPersistence.createDocument(propertyGroupId,
+                  propertyGroupDocumentDto)
+              .flatMap(savedDocument -> {
+                if (this.shouldCreateProperty(propertyGroupDocumentDto)) {
+                  return getPropertyGroupDocumentMono(propertyGroupId, file, savedDocument);
+                } else {
+                  return Mono.just(savedDocument);
+                }
+              });
+        });
+  }
+
+  private Mono<PropertyGroupDocument> getPropertyGroupDocumentMono(Integer propertyGroupId,
+      FilePart file, PropertyGroupDocument savedDocument) {
+    return this.filePartToInputStream(file)
+        .flatMapMany(inputStream -> Flux.fromIterable(
+            this.propertyService.importFromExcel(inputStream)))
+        .collectList()
+        .flatMap(importedProperties ->
+            this.propertyService.findBySubProjectPropertyGroupId(propertyGroupId)
+                .flatMap(this.propertyService::delete)
+                .thenMany(Flux.fromIterable(importedProperties))
+                .index()
+                .flatMap(tupleIndexPropertyToSave -> {
+                  Property propertyToSave = tupleIndexPropertyToSave.getT2();
+                  propertyToSave.setCodeSystem(this.generateCode(propertyGroupId,
+                      tupleIndexPropertyToSave.getT1()));
+                  return this.propertyService.create(propertyToSave, propertyGroupId);
+                })
+                .then(Mono.just(savedDocument))
+        );
+  }
+
+  private boolean shouldCreateProperty(PropertyGroupDocument propertyGroupDocument) {
+    return Objects.nonNull(propertyGroupDocument.getCatalogDetail())
+        && CATALOG_DETAIL_TEMPLATE_CODE.equals(propertyGroupDocument.getCatalogDetail().getCode());
+  }
+
+  public Mono<Void> deleteDocument(Integer documentId) {
+    return this.propertyGroupPersistence.deleteDocument(documentId);
+  }
+
+  private Mono<InputStream> filePartToInputStream(FilePart filePart) {
+    return DataBufferUtils.join(filePart.content())
+        .map(dataBuffer -> {
+          byte[] bytes = new byte[dataBuffer.readableByteCount()];
+          dataBuffer.read(bytes);
+          DataBufferUtils.release(dataBuffer);
+          return new ByteArrayInputStream(bytes);
+        });
+  }
+
+  private String generateCode(int subProjectPropertyGroupId, Long indexParam) {
+
+    String numberStr = String.valueOf(subProjectPropertyGroupId);
+    int remainingDigits = 6 - numberStr.length();
+    if (remainingDigits < 0) {
+      throw new IllegalArgumentException("numberParam is too long to fit in the code");
+    }
+
+    String indexStr = String.format("%0" + remainingDigits + "d", indexParam);
+    return "CS" + numberStr + indexStr;
+  }
+
 }

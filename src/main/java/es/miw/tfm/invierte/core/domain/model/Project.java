@@ -42,6 +42,8 @@ public class Project {
 
   private List<ProjectStage> projectStages = new ArrayList<>();
 
+  private List<ProjectDocument> projectDocuments = new ArrayList<>();
+
   public void setDefaultValues() {
     this.status = ProjectStatus.DRAFT;
   }

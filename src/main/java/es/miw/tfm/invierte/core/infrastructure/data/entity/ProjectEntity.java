@@ -55,7 +55,7 @@ public class ProjectEntity {
   @Column(length = 200)
   private String supervisor;
 
-  @Column(length = 10)
+  @Column(length = 12)
   @Enumerated(EnumType.STRING)
   private ProjectStatus status;
 
@@ -71,8 +71,8 @@ public class ProjectEntity {
       fetch = FetchType.EAGER)
   private List<SubProjectEntity> subProjectEntities = new ArrayList<>();
 
-  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<ProjectDocumentEntity> projectDocumentEntities;
+  @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+  private List<ProjectDocumentEntity> projectDocumentEntities = new ArrayList<>();
 
   /**
    * Constructs a ProjectEntity from a domain Project object.
@@ -101,6 +101,11 @@ public class ProjectEntity {
         .orElseGet(ArrayList::new)
         .forEach(projectStageEntity ->
           project.getProjectStages().add(projectStageEntity.toProjectStage()));
+
+    Optional.ofNullable(this.projectDocumentEntities)
+        .orElseGet(ArrayList::new)
+        .forEach(projectDocumentEntity ->
+            project.getProjectDocuments().add(projectDocumentEntity.toProjectDocument()));
 
     return project;
   }
