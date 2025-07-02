@@ -1,21 +1,21 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
+
 import es.miw.tfm.invierte.core.domain.model.Feature;
 import es.miw.tfm.invierte.core.domain.model.HouseFloorArea;
 import es.miw.tfm.invierte.core.domain.model.PropertyFeature;
 import es.miw.tfm.invierte.core.domain.model.PropertyGroup;
-import es.miw.tfm.invierte.core.domain.model.enums.BlockLocation;
 import es.miw.tfm.invierte.core.domain.model.enums.Flag;
 import es.miw.tfm.invierte.core.domain.model.enums.PropertyCategory;
 import es.miw.tfm.invierte.core.domain.model.enums.RoadWay;
 import es.miw.tfm.invierte.core.domain.model.enums.TowerLocation;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PropertyGroupEntityTest {
 
@@ -200,7 +200,7 @@ class PropertyGroupEntityTest {
     assertNotNull(group);
     assertEquals(entity.getId(), group.getId());
     assertEquals(entity.getName(), group.getName());
-    assertTrue(apartmentEntity.getTotalRooms().equals(group.getTotalRooms()));
+    assertEquals(apartmentEntity.getTotalRooms(), group.getTotalRooms());
 
 
   }

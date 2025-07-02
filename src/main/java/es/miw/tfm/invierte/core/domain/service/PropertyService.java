@@ -1,6 +1,5 @@
 package es.miw.tfm.invierte.core.domain.service;
 
-
 import es.miw.tfm.invierte.core.domain.model.Property;
 import es.miw.tfm.invierte.core.domain.model.enums.CommercializationCycle;
 import es.miw.tfm.invierte.core.domain.model.enums.Flag;
@@ -9,8 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -29,6 +28,7 @@ import reactor.core.publisher.Mono;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PropertyService {
 
   private final PropertyPersistence propertyPersistence;
@@ -87,19 +87,10 @@ public class PropertyService {
       return propiedades;
 
     } catch (IOException e) {
-      throw new RuntimeException("Failed to parse Excel", e);
+      log.error("Failed to parse Excel", e);
+      return List.of();
     }
-  }
 
-  private Double safeParseDouble(String str) {
-    if (str == null || str.isEmpty()) {
-      return 0.0;
-    }
-    try {
-      return Double.parseDouble(str);
-    } catch (NumberFormatException e) {
-      return 0.0;
-    }
   }
 
   public Mono<Void> delete(Property property) {

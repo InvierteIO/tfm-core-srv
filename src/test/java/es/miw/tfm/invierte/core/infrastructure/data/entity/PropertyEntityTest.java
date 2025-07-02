@@ -1,20 +1,17 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import es.miw.tfm.invierte.core.domain.model.Property;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.math.BigDecimal;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PropertyEntityTest {
 
   @Test
   void shouldBuildAndGetFields() {
-    ProjectEntity project = Mockito.mock(ProjectEntity.class);
-
     PropertyEntity entity = PropertyEntity.builder()
         .id(1)
         .name("Property Name")

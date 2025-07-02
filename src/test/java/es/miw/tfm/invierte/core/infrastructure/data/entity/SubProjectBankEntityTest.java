@@ -1,12 +1,13 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
-import es.miw.tfm.invierte.core.domain.model.StageBank;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import es.miw.tfm.invierte.core.domain.model.Bank;
+import es.miw.tfm.invierte.core.domain.model.StageBank;
 import es.miw.tfm.invierte.core.domain.model.enums.Currency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SubProjectBankEntityTest {
 

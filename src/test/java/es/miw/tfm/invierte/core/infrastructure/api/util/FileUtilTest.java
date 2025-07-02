@@ -1,5 +1,11 @@
 package es.miw.tfm.invierte.core.infrastructure.api.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
@@ -7,8 +13,6 @@ import es.miw.tfm.invierte.core.domain.model.PropertyGroupDocument;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.codec.multipart.FilePart;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class FileUtilTest {
 

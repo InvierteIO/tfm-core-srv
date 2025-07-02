@@ -1,19 +1,23 @@
-package es.miw.tfm.invierte.core.infrastructure.data.persistence;
+package es.miw.tfm.invierte.core.infrastructure.data.persistance;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import es.miw.tfm.invierte.core.domain.model.Property;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.PropertyRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.PropertyEntity;
-import es.miw.tfm.invierte.core.infrastructure.data.entity.SubProjectPropertyGroupEntity;
+import es.miw.tfm.invierte.core.infrastructure.data.persistence.PropertyPersistenceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 class PropertyPersistenceImplTest {
 

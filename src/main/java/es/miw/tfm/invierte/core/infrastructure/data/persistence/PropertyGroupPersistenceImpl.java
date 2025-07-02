@@ -1,7 +1,6 @@
 package es.miw.tfm.invierte.core.infrastructure.data.persistence;
 
 import es.miw.tfm.invierte.core.domain.exception.NotFoundException;
-import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
 import es.miw.tfm.invierte.core.domain.model.PropertyGroup;
 import es.miw.tfm.invierte.core.domain.model.PropertyGroupDocument;
 import es.miw.tfm.invierte.core.domain.persistence.PropertyGroupPersistence;
@@ -9,10 +8,8 @@ import es.miw.tfm.invierte.core.infrastructure.data.dao.CatalogDetailRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.PropertyGroupDocumentRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.PropertyGroupRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.SubProjectPropertyGroupRepository;
-import es.miw.tfm.invierte.core.infrastructure.data.entity.ProjectDocumentEntity;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.PropertyGroupDocumentEntity;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.PropertyGroupEntity;
-
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +40,8 @@ public class PropertyGroupPersistenceImpl implements PropertyGroupPersistence {
 
   private final SubProjectPropertyGroupRepository subProjectPropertyGroupRepository;
 
+  private static final String PROPERTY_GROUP_NOT_FOUND = "Non existent PropertyGroup with id: ";
+
   @Override
   public Mono<PropertyGroup> create(PropertyGroup propertyGroup) {
     final var propertyGroupEntity = new PropertyGroupEntity(propertyGroup);
@@ -54,10 +53,10 @@ public class PropertyGroupPersistenceImpl implements PropertyGroupPersistence {
   public Mono<PropertyGroup> update(Integer id, PropertyGroup propertyGroup) {
     return Mono.just(this.propertyGroupRepository.findById(id))
         .switchIfEmpty(Mono.error(
-            new NotFoundException("Non existent PropertyGroup with id: " + id)))
+            new NotFoundException(PROPERTY_GROUP_NOT_FOUND + id)))
         .flatMap(existingEntity -> {
           if (existingEntity.isEmpty()) {
-            return Mono.error(new NotFoundException("Non existent PropertyGroup with id: " + id));
+            return Mono.error(new NotFoundException(PROPERTY_GROUP_NOT_FOUND + id));
           }
           PropertyGroupEntity propertyGroupEntityDb = new PropertyGroupEntity(propertyGroup);
           propertyGroupEntityDb.setId(existingEntity.get().getId());
@@ -71,7 +70,7 @@ public class PropertyGroupPersistenceImpl implements PropertyGroupPersistence {
   public Mono<PropertyGroup> readById(Integer id) {
     return Mono.just(this.propertyGroupRepository.findById(id))
         .switchIfEmpty(Mono.error(
-            new NotFoundException("Non existent PropertyGroup with id: " + id)))
+            new NotFoundException(PROPERTY_GROUP_NOT_FOUND + id)))
         .map(Optional::get)
         .map(PropertyGroupEntity::toPropertyGroup);
   }
@@ -79,14 +78,14 @@ public class PropertyGroupPersistenceImpl implements PropertyGroupPersistence {
   @Override
   @Transactional
   public Mono<Void> deleteDocument(Integer documentId) {
-    return Mono.fromRunnable(() -> {
+    return Mono.fromRunnable(() ->
       this.propertyGroupDocumentRepository.findById(documentId)
           .ifPresent(propertyGroupDocumentEntity -> {
             propertyGroupDocumentEntity.setSubProjectPropertyGroup(null);
             this.propertyGroupDocumentRepository.save(propertyGroupDocumentEntity);
             this.propertyGroupDocumentRepository.delete(propertyGroupDocumentEntity);
-          });
-    });
+          })
+    );
   }
 
   @Override
@@ -94,11 +93,11 @@ public class PropertyGroupPersistenceImpl implements PropertyGroupPersistence {
   public Mono<PropertyGroupDocument> createDocument(Integer propertyGroupId,
       PropertyGroupDocument propertyGroupDocumentDto) {
     return Mono.just(this.subProjectPropertyGroupRepository.findById(propertyGroupId))
-        .switchIfEmpty(Mono.error(new NotFoundException("Non existent PropertyGroup with id: "
+        .switchIfEmpty(Mono.error(new NotFoundException(PROPERTY_GROUP_NOT_FOUND
             + propertyGroupId)))
         .flatMap(subProjectPropertyGroupEntity -> {
           if (subProjectPropertyGroupEntity.isEmpty()) {
-            return Mono.error(new NotFoundException("Non existent PropertyGroup with id: "
+            return Mono.error(new NotFoundException(PROPERTY_GROUP_NOT_FOUND
                 + propertyGroupId));
           }
           final var catalogDetailCode =

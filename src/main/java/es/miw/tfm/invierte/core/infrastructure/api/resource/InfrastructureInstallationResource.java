@@ -1,8 +1,6 @@
 package es.miw.tfm.invierte.core.infrastructure.api.resource;
 
-import es.miw.tfm.invierte.core.domain.model.Bank;
 import es.miw.tfm.invierte.core.domain.model.InfraInstallation;
-import es.miw.tfm.invierte.core.domain.service.BankService;
 import es.miw.tfm.invierte.core.domain.service.InfrastructureInstallationService;
 import es.miw.tfm.invierte.core.infrastructure.api.Rest;
 import lombok.RequiredArgsConstructor;

@@ -11,7 +11,6 @@ import es.miw.tfm.invierte.core.infrastructure.data.entity.SubProjectEntity;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.SubProjectPropertyGroupEntity;
 import java.util.List;
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;

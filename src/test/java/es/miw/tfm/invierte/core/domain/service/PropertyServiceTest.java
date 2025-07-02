@@ -1,10 +1,23 @@
 package es.miw.tfm.invierte.core.domain.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.List;
+
 import es.miw.tfm.invierte.core.domain.model.Property;
 import es.miw.tfm.invierte.core.domain.model.enums.CommercializationCycle;
 import es.miw.tfm.invierte.core.domain.model.enums.Flag;
 import es.miw.tfm.invierte.core.domain.persistence.PropertyPersistence;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,14 +28,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 class PropertyServiceTest {
 
@@ -32,10 +37,12 @@ class PropertyServiceTest {
   @InjectMocks
   private PropertyService propertyService;
 
+  private static final Integer VALUE_ONE = 1;
+
   @Test
   void create_shouldDelegateToPersistence() {
     Property property = Property.builder().name("Test").build();
-    when(propertyPersistence.create(eq(property), eq(1))).thenReturn(Mono.just(property));
+    when(propertyPersistence.create(eq(property), eq(VALUE_ONE))).thenReturn(Mono.just(property));
 
     StepVerifier.create(propertyService.create(property, 1))
         .expectNext(property)

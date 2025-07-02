@@ -1,5 +1,9 @@
 package es.miw.tfm.invierte.core.domain.service;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import es.miw.tfm.invierte.core.domain.model.FinancialBonus;
 import es.miw.tfm.invierte.core.domain.persistence.FinancialBonusPersistence;
 import org.junit.jupiter.api.Test;
@@ -9,8 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class FinancialBonusServiceTest {

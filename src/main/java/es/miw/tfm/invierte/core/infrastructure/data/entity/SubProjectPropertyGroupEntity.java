@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -96,17 +95,17 @@ public class SubProjectPropertyGroupEntity {
 
     Optional.ofNullable(this.propertyGroupDocumentEntities)
         .orElseGet(ArrayList::new)
-        .forEach(propertyGroupDocumentEntity -> {
+        .forEach(propertyGroupDocumentEntity ->
           subProjectPropertyGroup.getPropertyGroupDocuments().add(
-              propertyGroupDocumentEntity.toPropertyGroupDocument());
-        });
+              propertyGroupDocumentEntity.toPropertyGroupDocument())
+      );
 
     Optional.ofNullable(this.propertyEntities)
         .orElseGet(ArrayList::new)
-        .forEach(propertyEntity -> {
+        .forEach(propertyEntity ->
           subProjectPropertyGroup.getProperties().add(
-              propertyEntity.toProperty());
-        });
+              propertyEntity.toProperty())
+      );
 
     return subProjectPropertyGroup;
   }

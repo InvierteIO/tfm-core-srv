@@ -1,8 +1,6 @@
 package es.miw.tfm.invierte.core.infrastructure.api.resource;
 
-
 import es.miw.tfm.invierte.core.domain.exception.BadRequestException;
-import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
 import es.miw.tfm.invierte.core.domain.model.PropertyGroupDocument;
 import es.miw.tfm.invierte.core.domain.model.SubProjectPropertyGroup;
 import es.miw.tfm.invierte.core.domain.service.PropertyGroupService;
@@ -161,7 +159,8 @@ public class RealEstatePropertyGroupResource {
    */
   @PostMapping(PROPERTY_GROUP + ASSIGN)
   @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
-  public Flux<SubProjectPropertyGroup> assign(@PathVariable String taxIdentificationNumber,
+  public Flux<SubProjectPropertyGroup> assignPropertyGroup(
+      @PathVariable String taxIdentificationNumber,
       @Valid @RequestBody List<SubProjectPropertyGroup> subProjectPropertyGroupList) {
     log.info("Assign property group: {} for taxIdentificationNumber {}",
         subProjectPropertyGroupList, taxIdentificationNumber);
@@ -180,7 +179,8 @@ public class RealEstatePropertyGroupResource {
    */
   @PostMapping(PROPERTY_GROUP + DUPLICATE)
   @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
-  public Flux<SubProjectPropertyGroup> duplicate(@PathVariable String taxIdentificationNumber,
+  public Flux<SubProjectPropertyGroup> duplicatePropertyGroup(
+      @PathVariable String taxIdentificationNumber,
       @Valid @RequestBody List<SubProjectPropertyGroup> subProjectPropertyGroupList) {
     log.info("duplicate property group: {} for taxIdentificationNumber {}",
         subProjectPropertyGroupList, taxIdentificationNumber);

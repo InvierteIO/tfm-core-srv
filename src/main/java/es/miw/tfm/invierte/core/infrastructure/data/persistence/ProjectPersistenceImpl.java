@@ -9,7 +9,6 @@ import es.miw.tfm.invierte.core.infrastructure.data.dao.ProjectDocumentRepositor
 import es.miw.tfm.invierte.core.infrastructure.data.dao.ProjectRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.ProjectDocumentEntity;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.ProjectEntity;
-
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +38,8 @@ public class ProjectPersistenceImpl  implements ProjectPersistence {
 
   private final CatalogDetailRepository catalogDetailRepository;
 
+  private static final String PROJECT_NOT_FOUND = "Non existent Project with id: ";
+
   @Override
   public Mono<Project> create(Project project) {
     final var projectEntity = new ProjectEntity(project);
@@ -50,10 +51,10 @@ public class ProjectPersistenceImpl  implements ProjectPersistence {
   @Transactional
   public Mono<Project> update(Integer id, Project project) {
     return Mono.just(this.projectRepository.findById(id))
-        .switchIfEmpty(Mono.error(new NotFoundException("Non existent Project with id: " + id)))
+        .switchIfEmpty(Mono.error(new NotFoundException(PROJECT_NOT_FOUND + id)))
         .flatMap(existingEntity -> {
           if (existingEntity.isEmpty()) {
-            return Mono.error(new NotFoundException("Non existent Project with id: " + id));
+            return Mono.error(new NotFoundException(PROJECT_NOT_FOUND + id));
           }
           ProjectEntity projectUpdateDb = new ProjectEntity(project);
           projectUpdateDb.setId(existingEntity.get().getId());
@@ -66,7 +67,7 @@ public class ProjectPersistenceImpl  implements ProjectPersistence {
   @Transactional(readOnly = true)
   public Mono<Project> readById(Integer id) {
     return Mono.just(this.projectRepository.findById(id))
-        .switchIfEmpty(Mono.error(new NotFoundException("Non existent Project with id: " + id)))
+        .switchIfEmpty(Mono.error(new NotFoundException(PROJECT_NOT_FOUND + id)))
         .map(Optional::get)
         .map(ProjectEntity::toProject);
   }
@@ -77,7 +78,7 @@ public class ProjectPersistenceImpl  implements ProjectPersistence {
     return Mono.just(this.projectRepository
             .findByTaxIdentificationNumberAndId(taxIdentificationNumber, projectId))
         .switchIfEmpty(Mono.error(
-            new NotFoundException("Non existent Project with id: " + projectId
+            new NotFoundException(PROJECT_NOT_FOUND + projectId
                 + " for taxIdentificationNumber: " + taxIdentificationNumber)))
         .map(ProjectEntity::toProject);
   }
@@ -86,11 +87,11 @@ public class ProjectPersistenceImpl  implements ProjectPersistence {
   @Transactional
   public Mono<ProjectDocument> createDocument(Integer projectId, ProjectDocument projectDocument) {
     return Mono.just(this.projectRepository.findById(projectId))
-        .switchIfEmpty(Mono.error(new NotFoundException("Non existent Project with id: "
+        .switchIfEmpty(Mono.error(new NotFoundException(PROJECT_NOT_FOUND
             + projectId)))
         .flatMap(projectEntity -> {
           if (projectEntity.isEmpty()) {
-            return Mono.error(new NotFoundException("Non existent Project with id: " + projectId));
+            return Mono.error(new NotFoundException(PROJECT_NOT_FOUND + projectId));
           }
           final var catalogDetailCode = Objects.nonNull(projectDocument.getCatalogDetail())
               ? projectDocument.getCatalogDetail().getCode() : null;
@@ -108,9 +109,9 @@ public class ProjectPersistenceImpl  implements ProjectPersistence {
   @Override
   @Transactional
   public Mono<Void> deleteDocument(Integer documentId) {
-    return Mono.fromRunnable(() -> {
-      this.projectDocumentRepository.deleteById(documentId);
-    });
+    return Mono.fromRunnable(() ->
+      this.projectDocumentRepository.deleteById(documentId)
+    );
   }
 
   @Override

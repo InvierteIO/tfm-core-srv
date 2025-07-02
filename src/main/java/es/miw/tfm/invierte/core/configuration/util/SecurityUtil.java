@@ -3,6 +3,7 @@ package es.miw.tfm.invierte.core.configuration.util;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Stream;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

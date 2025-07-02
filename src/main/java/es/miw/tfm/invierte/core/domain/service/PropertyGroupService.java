@@ -2,7 +2,6 @@ package es.miw.tfm.invierte.core.domain.service;
 
 import es.miw.tfm.invierte.core.domain.exception.NotFoundException;
 import es.miw.tfm.invierte.core.domain.model.Project;
-import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
 import es.miw.tfm.invierte.core.domain.model.ProjectStage;
 import es.miw.tfm.invierte.core.domain.model.Property;
 import es.miw.tfm.invierte.core.domain.model.PropertyGroup;
@@ -14,10 +13,7 @@ import es.miw.tfm.invierte.core.domain.persistence.PropertyGroupPersistence;
 import es.miw.tfm.invierte.core.domain.persistence.SubProjectPersistence;
 import es.miw.tfm.invierte.core.domain.persistence.SubProjectPropertyGroupPersistence;
 import jakarta.validation.Valid;
-
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +21,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.codec.multipart.FilePart;
@@ -346,8 +341,8 @@ public class PropertyGroupService {
       throw new IllegalArgumentException("numberParam is too long to fit in the code");
     }
 
-    String indexStr = String.format("%0" + remainingDigits + "d", indexParam);
-    return "CS" + numberStr + indexStr;
+    String format = String.format("CS%%s%%0%dd", remainingDigits);
+    return String.format(format, numberStr, indexParam);
   }
 
 }

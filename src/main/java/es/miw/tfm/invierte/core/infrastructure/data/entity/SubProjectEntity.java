@@ -146,8 +146,8 @@ public class SubProjectEntity {
             new SubProjectCatalogDetailEntity(stageCatalogDetail, this)));
 
     Optional.ofNullable(projectStage.getLocationCode())
-        .ifPresent(locationCode ->
-            this.locationCode = new LocationCodeEntity(locationCode));
+        .ifPresent(locationCodeModel ->
+            this.locationCode = new LocationCodeEntity(locationCodeModel));
   }
 
   /**
@@ -185,29 +185,29 @@ public class SubProjectEntity {
 
     Optional.ofNullable(this.subProjectBanks)
         .orElseGet(ArrayList::new)
-        .forEach(subProjectBankEntity -> {
-          projectStage.getStageBanks().add(subProjectBankEntity.toStageBank());
-        });
+        .forEach(subProjectBankEntity ->
+          projectStage.getStageBanks().add(subProjectBankEntity.toStageBank())
+      );
 
     Optional.ofNullable(this.subProjectBonusTypes)
         .orElseGet(ArrayList::new)
-        .forEach(subProjectBonusTypeEntity -> {
-          projectStage.getStageBonusTypes().add(subProjectBonusTypeEntity.toStageBonusTypes());
-        });
+        .forEach(subProjectBonusTypeEntity ->
+          projectStage.getStageBonusTypes().add(subProjectBonusTypeEntity.toStageBonusTypes())
+      );
 
     Optional.ofNullable(this.subProjectInfrastructureInstallationEntities)
         .orElseGet(ArrayList::new)
-        .forEach(subProjectInfrastructureInstallationEntity -> {
+        .forEach(subProjectInfrastructureInstallationEntity ->
           projectStage.getStageInfraInstallations().add(
-              subProjectInfrastructureInstallationEntity.toSubProjectInfrastructureInstallation());
-        });
+              subProjectInfrastructureInstallationEntity.toSubProjectInfrastructureInstallation())
+      );
 
     Optional.ofNullable(this.subProjectCatalogDetailEntities)
         .orElseGet(ArrayList::new)
-        .forEach(subProjectCatalogDetailEntity -> {
+        .forEach(subProjectCatalogDetailEntity ->
           projectStage.getStageCatalogDetails().add(
-              subProjectCatalogDetailEntity.toSubProjectCatalogDetail());
-        });
+              subProjectCatalogDetailEntity.toSubProjectCatalogDetail())
+      );
 
     Optional.ofNullable(this.locationCode)
         .ifPresent(locationCodeEntity ->

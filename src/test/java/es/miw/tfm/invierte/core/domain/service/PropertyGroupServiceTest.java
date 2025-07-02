@@ -1,24 +1,33 @@
 package es.miw.tfm.invierte.core.domain.service;
 
-import es.miw.tfm.invierte.core.domain.model.*;
-import es.miw.tfm.invierte.core.domain.persistence.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+
+import es.miw.tfm.invierte.core.domain.model.Project;
+import es.miw.tfm.invierte.core.domain.model.ProjectStage;
+import es.miw.tfm.invierte.core.domain.model.PropertyGroup;
+import es.miw.tfm.invierte.core.domain.model.PropertyGroupDocument;
+import es.miw.tfm.invierte.core.domain.model.SubProjectPropertyGroup;
+import es.miw.tfm.invierte.core.domain.persistence.FileUploadPersistence;
+import es.miw.tfm.invierte.core.domain.persistence.ProjectPersistence;
+import es.miw.tfm.invierte.core.domain.persistence.PropertyGroupPersistence;
+import es.miw.tfm.invierte.core.domain.persistence.SubProjectPersistence;
+import es.miw.tfm.invierte.core.domain.persistence.SubProjectPropertyGroupPersistence;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.codec.multipart.FilePart;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Objects;
-
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PropertyGroupServiceTest {
@@ -38,6 +47,8 @@ class PropertyGroupServiceTest {
 
   @InjectMocks
   private PropertyGroupService propertyGroupService;
+
+  private static final Integer VALUE_ONE = 1;
 
   @Test
   void create_shouldCreateAndLinkPropertyGroups() {
@@ -176,13 +187,13 @@ class PropertyGroupServiceTest {
     SubProjectPropertyGroup spg = new SubProjectPropertyGroup();
     spg.setPropertyGroup(group);
 
-    when(propertyGroupPersistence.update(eq(1), any())).thenReturn(Mono.just(group));
+    when(propertyGroupPersistence.update(eq(VALUE_ONE), any())).thenReturn(Mono.just(group));
 
     StepVerifier.create(propertyGroupService.update(List.of(spg)))
         .expectNext(spg)
         .verifyComplete();
 
-    verify(propertyGroupPersistence).update(eq(1), any());
+    verify(propertyGroupPersistence).update(eq(VALUE_ONE), any());
   }
 
   @Test

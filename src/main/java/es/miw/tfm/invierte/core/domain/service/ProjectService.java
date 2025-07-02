@@ -2,12 +2,14 @@ package es.miw.tfm.invierte.core.domain.service;
 
 import es.miw.tfm.invierte.core.domain.model.Project;
 import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
+import es.miw.tfm.invierte.core.domain.model.SubProjectPropertyGroup;
 import es.miw.tfm.invierte.core.domain.model.dto.ProjectSummaryDto;
 import es.miw.tfm.invierte.core.domain.model.enums.ProjectStatus;
 import es.miw.tfm.invierte.core.domain.model.enums.PropertyCategory;
 import es.miw.tfm.invierte.core.domain.persistence.FileUploadPersistence;
 import es.miw.tfm.invierte.core.domain.persistence.ProjectPersistence;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
@@ -100,30 +102,34 @@ public class ProjectService {
                             pg.getPropertyGroup().getPropertyCategory()))
                 )
                 .map(propertyGroups -> {
-                  ProjectSummaryDto dto = new ProjectSummaryDto();
-                  dto.setId(project.getId());
-                  dto.setName(project.getName());
-                  dto.setAddress(project.getOfficeAddress());
-                  dto.setStages(project.getStages());
-                  dto.setStatus(project.getStatus());
-
-                  for (var group : propertyGroups) {
-                    final var category = group.getPropertyGroup().getPropertyCategory();
-                    int countApartments = PropertyCategory.APARTMENT.equals(category)
-                        ? group.getProperties().size() : 0;
-                    int countLands = PropertyCategory.LAND.equals(category)
-                        ? group.getProperties().size() : 0;
-                    int countHouses = PropertyCategory.HOUSE.equals(category)
-                        ? group.getProperties().size() : 0;
-                    double areaTotal = group.getPropertyGroup().getArea() != null
-                        ? group.getPropertyGroup().getArea() : 0.0;
-
-                    dto.acumularTotales(countApartments, countLands, countHouses, areaTotal);
-                  }
-                  return dto;
+                  return getProjectSummaryDto(project, propertyGroups);
                 })
         );
   }
 
+  private static ProjectSummaryDto getProjectSummaryDto(Project project,
+      List<SubProjectPropertyGroup> propertyGroups) {
+    ProjectSummaryDto dto = new ProjectSummaryDto();
+    dto.setId(project.getId());
+    dto.setName(project.getName());
+    dto.setAddress(project.getOfficeAddress());
+    dto.setStages(project.getStages());
+    dto.setStatus(project.getStatus());
+
+    for (var group : propertyGroups) {
+      final var category = group.getPropertyGroup().getPropertyCategory();
+      int countApartments = PropertyCategory.APARTMENT.equals(category)
+          ? group.getProperties().size() : 0;
+      int countLands = PropertyCategory.LAND.equals(category)
+          ? group.getProperties().size() : 0;
+      int countHouses = PropertyCategory.HOUSE.equals(category)
+          ? group.getProperties().size() : 0;
+      double areaTotal = group.getPropertyGroup().getArea() != null
+          ? group.getPropertyGroup().getArea() : 0.0;
+
+      dto.acumularTotales(countApartments, countLands, countHouses, areaTotal);
+    }
+    return dto;
+  }
 
 }
