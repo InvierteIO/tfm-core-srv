@@ -100,7 +100,7 @@ class RealEstateCompanyProjectResourceTest {
       Mono<ProjectDocument> result = resource.createDocument("TAX123", 1, filePart, projectDocumentJson);
 
       assertNotNull(result.block());
-      verify(projectService).createDocument(eq(VALUE_ONE), eq(projectDocument), eq(filePart));
+      verify(projectService).createDocument(VALUE_ONE, projectDocument, filePart);
     }
   }
 
