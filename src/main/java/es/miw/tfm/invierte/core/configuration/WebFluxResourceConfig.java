@@ -19,11 +19,8 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 @Profile("dev")
 public class WebFluxResourceConfig implements WebFluxConfigurer {
 
-  private final String uploadDir;
-
-  private WebFluxResourceConfig(@Value("${app.upload-dir}") String uploadDir) {
-    this.uploadDir = uploadDir;
-  }
+  @Value("${app.upload-dir}")
+  private String uploadDir;
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {

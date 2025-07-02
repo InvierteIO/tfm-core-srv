@@ -94,7 +94,7 @@ class RealEstateCompanyProjectResourceTest {
     try (MockedStatic<FileUtil> fileUtilMock = mockStatic(FileUtil.class)) {
       fileUtilMock.when(() -> FileUtil.isAllowedFile(filePart)).thenReturn(true);
       fileUtilMock.when(() -> FileUtil.parseJsonToProjectDocument(projectDocumentJson)).thenReturn(projectDocument);
-      when(projectService.createDocument(eq(VALUE_ONE), eq(projectDocument), eq(filePart)))
+      when(projectService.createDocument(VALUE_ONE, projectDocument, filePart))
           .thenReturn(Mono.just(projectDocument));
 
       Mono<ProjectDocument> result = resource.createDocument("TAX123", 1, filePart, projectDocumentJson);

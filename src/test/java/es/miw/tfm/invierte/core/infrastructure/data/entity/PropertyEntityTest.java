@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import es.miw.tfm.invierte.core.domain.model.Property;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 class PropertyEntityTest {
 

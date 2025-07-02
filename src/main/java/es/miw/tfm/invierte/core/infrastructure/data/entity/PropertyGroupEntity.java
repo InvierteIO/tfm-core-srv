@@ -193,9 +193,9 @@ public class PropertyGroupEntity {
 
     Optional.ofNullable(this.propertyGroupFeatureEntities)
         .orElseGet(ArrayList::new)
-        .forEach(propertyGroupFeatureEntity -> {
-          propertyGroup.getPropertyFeatures().add(propertyGroupFeatureEntity.toPropertyFeature());
-        });
+        .forEach(propertyGroupFeatureEntity ->
+          propertyGroup.getPropertyFeatures().add(propertyGroupFeatureEntity.toPropertyFeature())
+      );
 
     return propertyGroup;
   }

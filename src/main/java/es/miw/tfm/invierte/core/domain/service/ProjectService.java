@@ -101,9 +101,9 @@ public class ProjectService {
                         .anyMatch(pg -> propertyCategoryEnum.equals(
                             pg.getPropertyGroup().getPropertyCategory()))
                 )
-                .map(propertyGroups -> {
-                  return getProjectSummaryDto(project, propertyGroups);
-                })
+                .map(propertyGroups ->
+                  getProjectSummaryDto(project, propertyGroups)
+                )
         );
   }
 
