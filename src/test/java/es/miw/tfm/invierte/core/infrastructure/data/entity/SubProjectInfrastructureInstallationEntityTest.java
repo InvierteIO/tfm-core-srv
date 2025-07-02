@@ -1,12 +1,12 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import es.miw.tfm.invierte.core.domain.model.InfraInstallation;
 import es.miw.tfm.invierte.core.domain.model.StageInfraInstallation;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.BeanUtils;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SubProjectInfrastructureInstallationEntityTest {
 
@@ -67,7 +67,6 @@ class SubProjectInfrastructureInstallationEntityTest {
   @Test
   void shouldConvertToDomain() {
     InfrastructureInstallationEntity infraEntity = Mockito.mock(InfrastructureInstallationEntity.class);
-    StageInfraInstallation expectedDomain = new StageInfraInstallation();
     Mockito.when(infraEntity.toInfrastructureInstallation()).thenReturn(new InfraInstallation());
 
     SubProjectInfrastructureInstallationEntity entity = SubProjectInfrastructureInstallationEntity.builder()

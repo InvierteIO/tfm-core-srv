@@ -1,4 +1,12 @@
-package es.miw.tfm.invierte.core.infrastructure.data.persistence;
+package es.miw.tfm.invierte.core.infrastructure.data.persistance;
+
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import es.miw.tfm.invierte.core.domain.exception.NotFoundException;
 import es.miw.tfm.invierte.core.domain.model.PropertyGroup;
@@ -7,19 +15,15 @@ import es.miw.tfm.invierte.core.infrastructure.data.dao.CatalogDetailRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.PropertyGroupDocumentRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.PropertyGroupRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.SubProjectPropertyGroupRepository;
+import es.miw.tfm.invierte.core.infrastructure.data.entity.CatalogDetailEntity;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.PropertyGroupDocumentEntity;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.PropertyGroupEntity;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.SubProjectPropertyGroupEntity;
-import es.miw.tfm.invierte.core.infrastructure.data.entity.CatalogDetailEntity;
+import es.miw.tfm.invierte.core.infrastructure.data.persistence.PropertyGroupPersistenceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class PropertyGroupPersistenceImplTest {
 
@@ -126,7 +130,6 @@ class PropertyGroupPersistenceImplTest {
     Integer groupId = 1;
     PropertyGroupDocument doc = mock(PropertyGroupDocument.class);
     SubProjectPropertyGroupEntity subProjectEntity = mock(SubProjectPropertyGroupEntity.class);
-    CatalogDetailEntity catalogDetail = mock(CatalogDetailEntity.class);
     PropertyGroupDocumentEntity documentEntity = mock(PropertyGroupDocumentEntity.class);
     PropertyGroupDocument expected = new PropertyGroupDocument();
 

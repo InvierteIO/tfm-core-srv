@@ -1,6 +1,5 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
-import es.miw.tfm.invierte.core.domain.model.Feature;
 import es.miw.tfm.invierte.core.domain.model.HouseFloorArea;
 import es.miw.tfm.invierte.core.domain.model.PropertyGroup;
 import es.miw.tfm.invierte.core.domain.model.enums.Currency;
@@ -19,12 +18,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

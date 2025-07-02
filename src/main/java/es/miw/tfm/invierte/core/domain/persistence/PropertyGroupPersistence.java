@@ -1,6 +1,5 @@
 package es.miw.tfm.invierte.core.domain.persistence;
 
-import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
 import es.miw.tfm.invierte.core.domain.model.PropertyGroup;
 import es.miw.tfm.invierte.core.domain.model.PropertyGroupDocument;
 import org.springframework.stereotype.Repository;

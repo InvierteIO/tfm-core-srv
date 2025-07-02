@@ -1,18 +1,21 @@
-package es.miw.tfm.invierte.core.infrastructure.data.persistence;
+package es.miw.tfm.invierte.core.infrastructure.data.persistance;
 
-import es.miw.tfm.invierte.core.domain.model.Bank;
-import es.miw.tfm.invierte.core.infrastructure.data.dao.BankRepository;
-import es.miw.tfm.invierte.core.infrastructure.data.entity.BankEntity;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
-import reactor.test.StepVerifier;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import es.miw.tfm.invierte.core.domain.model.Bank;
+import es.miw.tfm.invierte.core.infrastructure.data.dao.BankRepository;
+import es.miw.tfm.invierte.core.infrastructure.data.entity.BankEntity;
+import es.miw.tfm.invierte.core.infrastructure.data.persistence.BankPersistenceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 class BankPersistenceImplTest {
 

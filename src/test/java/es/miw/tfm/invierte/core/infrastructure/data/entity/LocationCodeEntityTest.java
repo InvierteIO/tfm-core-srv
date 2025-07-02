@@ -1,12 +1,14 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
-import es.miw.tfm.invierte.core.domain.model.LocationCode;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import es.miw.tfm.invierte.core.domain.model.LocationCode;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class LocationCodeEntityTest {
 

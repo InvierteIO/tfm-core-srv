@@ -1,5 +1,18 @@
 package es.miw.tfm.invierte.core.infrastructure.api.resource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.anyList;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+
 import es.miw.tfm.invierte.core.domain.exception.BadRequestException;
 import es.miw.tfm.invierte.core.domain.model.PropertyGroupDocument;
 import es.miw.tfm.invierte.core.domain.model.SubProjectPropertyGroup;
@@ -15,11 +28,6 @@ import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 class RealEstatePropertyGroupResourceTest {
 
@@ -28,6 +36,8 @@ class RealEstatePropertyGroupResourceTest {
 
   @InjectMocks
   private RealEstatePropertyGroupResource resource;
+
+  private static final Integer VALUE_ONE = 1;
 
   @Test
   void shouldCreatePropertyGroups() {
@@ -77,7 +87,7 @@ class RealEstatePropertyGroupResourceTest {
     SubProjectPropertyGroup group = new SubProjectPropertyGroup();
     when(propertyGroupService.assign(anyList())).thenReturn(Flux.just(group));
 
-    Flux<SubProjectPropertyGroup> result = resource.assign("TAX123", List.of(group));
+    Flux<SubProjectPropertyGroup> result = resource.assignPropertyGroup("TAX123", List.of(group));
 
     assertEquals(1, result.collectList().block().size());
     verify(propertyGroupService).assign(anyList());
@@ -88,7 +98,7 @@ class RealEstatePropertyGroupResourceTest {
     SubProjectPropertyGroup group = new SubProjectPropertyGroup();
     when(propertyGroupService.duplicate(anyList())).thenReturn(Flux.just(group));
 
-    Flux<SubProjectPropertyGroup> result = resource.duplicate("TAX123", List.of(group));
+    Flux<SubProjectPropertyGroup> result = resource.duplicatePropertyGroup("TAX123", List.of(group));
 
     assertEquals(1, result.collectList().block().size());
     verify(propertyGroupService).duplicate(anyList());
@@ -115,13 +125,13 @@ class RealEstatePropertyGroupResourceTest {
       fileUtilMock.when(() -> FileUtil.isAllowedFile(filePart)).thenReturn(true);
       fileUtilMock.when(() -> FileUtil.parseJsonToPropertyGroupDocument(propertyGroupDocumentJson))
           .thenReturn(propertyGroupDocument);
-      when(propertyGroupService.createDocument(eq(1), eq(propertyGroupDocument), eq(filePart)))
+      when(propertyGroupService.createDocument(eq(VALUE_ONE), eq(propertyGroupDocument), eq(filePart)))
           .thenReturn(Mono.just(propertyGroupDocument));
 
       Mono<PropertyGroupDocument> result = resource.createDocument("TAX123", 1, filePart, propertyGroupDocumentJson);
 
       assertNotNull(result.block());
-      verify(propertyGroupService).createDocument(eq(1), eq(propertyGroupDocument), eq(filePart));
+      verify(propertyGroupService).createDocument(eq(VALUE_ONE), eq(propertyGroupDocument), eq(filePart));
     }
   }
 
@@ -135,7 +145,7 @@ class RealEstatePropertyGroupResourceTest {
 
       Mono<PropertyGroupDocument> result = resource.createDocument("TAX123", 1, filePart, propertyGroupDocumentJson);
 
-      assertThrows(BadRequestException.class, () -> result.block());
+      assertThrows(BadRequestException.class, result::block);
     }
   }
 

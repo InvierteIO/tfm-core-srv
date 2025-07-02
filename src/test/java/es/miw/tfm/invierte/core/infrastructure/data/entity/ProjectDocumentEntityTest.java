@@ -1,14 +1,16 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
-import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
-import es.miw.tfm.invierte.core.domain.model.CatalogDetail;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import es.miw.tfm.invierte.core.domain.model.CatalogDetail;
+import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class ProjectDocumentEntityTest {
 

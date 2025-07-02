@@ -1,15 +1,26 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
-import es.miw.tfm.invierte.core.domain.model.*;
-import es.miw.tfm.invierte.core.domain.model.enums.CommercializationCycle;
-import es.miw.tfm.invierte.core.domain.model.enums.ProjectStatus;
-import es.miw.tfm.invierte.core.domain.model.enums.SubProjectStatus;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import es.miw.tfm.invierte.core.domain.model.Bank;
+import es.miw.tfm.invierte.core.domain.model.CatalogDetail;
+import es.miw.tfm.invierte.core.domain.model.FinancialBonusType;
+import es.miw.tfm.invierte.core.domain.model.InfraInstallation;
+import es.miw.tfm.invierte.core.domain.model.LocationCode;
+import es.miw.tfm.invierte.core.domain.model.ProjectStage;
+import es.miw.tfm.invierte.core.domain.model.StageBank;
+import es.miw.tfm.invierte.core.domain.model.StageBonusType;
+import es.miw.tfm.invierte.core.domain.model.StageCatalogDetail;
+import es.miw.tfm.invierte.core.domain.model.StageInfraInstallation;
+import es.miw.tfm.invierte.core.domain.model.enums.CommercializationCycle;
+import es.miw.tfm.invierte.core.domain.model.enums.SubProjectStatus;
+import org.junit.jupiter.api.Test;
 
 class SubProjectEntityTest {
 

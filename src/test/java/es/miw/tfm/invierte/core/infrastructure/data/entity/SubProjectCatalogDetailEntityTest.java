@@ -1,12 +1,13 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import es.miw.tfm.invierte.core.domain.model.CatalogDetail;
 import es.miw.tfm.invierte.core.domain.model.InfraInstallation;
 import es.miw.tfm.invierte.core.domain.model.StageCatalogDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SubProjectCatalogDetailEntityTest {
 

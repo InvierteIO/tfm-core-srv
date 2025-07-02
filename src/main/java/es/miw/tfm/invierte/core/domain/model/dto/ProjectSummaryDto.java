@@ -2,7 +2,6 @@ package es.miw.tfm.invierte.core.domain.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import es.miw.tfm.invierte.core.domain.model.enums.ProjectStatus;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

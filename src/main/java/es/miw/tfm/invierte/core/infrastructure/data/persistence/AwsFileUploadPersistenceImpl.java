@@ -5,7 +5,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import es.miw.tfm.invierte.core.domain.persistence.FileUploadPersistence;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.UUID;
@@ -47,7 +46,7 @@ public class AwsFileUploadPersistenceImpl implements FileUploadPersistence {
     this.bucketName = bucketName;
     this.s3Client =  AmazonS3ClientBuilder.standard()
         .withRegion(Regions.fromName(region))
-        .build();;
+        .build();
   }
 
   @Override
@@ -71,7 +70,7 @@ public class AwsFileUploadPersistenceImpl implements FileUploadPersistence {
             } catch (IOException e) {
               log.error("Error uploading file to S3 {}. Error: {}",
                   filePart.filename(), e.getMessage());
-              throw new RuntimeException("Failed to upload file to S3: " + filePart.filename(), e);
+              throw new IOException("Failed to upload file to S3: " + filePart.filename(), e);
             }
           }).subscribeOn(Schedulers.boundedElastic());
         });

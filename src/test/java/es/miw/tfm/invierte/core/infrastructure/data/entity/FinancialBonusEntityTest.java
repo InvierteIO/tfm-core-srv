@@ -1,13 +1,15 @@
 package es.miw.tfm.invierte.core.infrastructure.data.entity;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
+
 import es.miw.tfm.invierte.core.domain.model.FinancialBonus;
 import es.miw.tfm.invierte.core.domain.model.FinancialBonusType;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class FinancialBonusEntityTest {
 

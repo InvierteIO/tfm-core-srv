@@ -1,5 +1,11 @@
 package es.miw.tfm.invierte.core.infrastructure.api.resource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import es.miw.tfm.invierte.core.domain.model.Bank;
 import es.miw.tfm.invierte.core.domain.service.BankService;
 import org.junit.jupiter.api.Test;
@@ -8,10 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BankResourceTest {

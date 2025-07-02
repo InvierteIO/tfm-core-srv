@@ -1,7 +1,6 @@
 package es.miw.tfm.invierte.core.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import es.miw.tfm.invierte.core.domain.model.enums.FinancialEntityType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

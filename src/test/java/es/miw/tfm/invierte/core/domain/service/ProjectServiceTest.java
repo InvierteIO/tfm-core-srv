@@ -1,9 +1,15 @@
 package es.miw.tfm.invierte.core.domain.service;
 
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import es.miw.tfm.invierte.core.domain.model.Project;
 import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
 import es.miw.tfm.invierte.core.domain.model.Property;
-import es.miw.tfm.invierte.core.domain.model.dto.ProjectSummaryDto;
 import es.miw.tfm.invierte.core.domain.model.enums.ProjectStatus;
 import es.miw.tfm.invierte.core.domain.model.enums.PropertyCategory;
 import es.miw.tfm.invierte.core.domain.persistence.FileUploadPersistence;
@@ -18,10 +24,6 @@ import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.util.Collections;
-
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectServiceTest {

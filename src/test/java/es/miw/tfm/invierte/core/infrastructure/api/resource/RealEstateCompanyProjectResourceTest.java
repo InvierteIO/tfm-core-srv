@@ -1,5 +1,16 @@
 package es.miw.tfm.invierte.core.infrastructure.api.resource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import es.miw.tfm.invierte.core.domain.exception.BadRequestException;
 import es.miw.tfm.invierte.core.domain.model.Project;
 import es.miw.tfm.invierte.core.domain.model.ProjectDocument;
@@ -16,9 +27,6 @@ import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 class RealEstateCompanyProjectResourceTest {
 
@@ -27,6 +35,8 @@ class RealEstateCompanyProjectResourceTest {
 
   @InjectMocks
   private RealEstateCompanyProjectResource resource;
+
+  private static final Integer VALUE_ONE = 1;
 
   @Test
   void shouldCreateProject() {
@@ -44,12 +54,12 @@ class RealEstateCompanyProjectResourceTest {
   void shouldUpdateProject() {
     Project project = new Project();
     project.setTaxIdentificationNumber("TAX123");
-    when(projectService.update(eq(1), any(Project.class))).thenReturn(Mono.just(project));
+    when(projectService.update(eq(VALUE_ONE), any(Project.class))).thenReturn(Mono.just(project));
 
     Mono<Project> result = resource.update("TAX123", 1, project);
 
     assertEquals("TAX123", result.block().getTaxIdentificationNumber());
-    verify(projectService).update(eq(1), any(Project.class));
+    verify(projectService).update(eq(VALUE_ONE), any(Project.class));
   }
 
   @Test
@@ -84,13 +94,13 @@ class RealEstateCompanyProjectResourceTest {
     try (MockedStatic<FileUtil> fileUtilMock = mockStatic(FileUtil.class)) {
       fileUtilMock.when(() -> FileUtil.isAllowedFile(filePart)).thenReturn(true);
       fileUtilMock.when(() -> FileUtil.parseJsonToProjectDocument(projectDocumentJson)).thenReturn(projectDocument);
-      when(projectService.createDocument(eq(1), eq(projectDocument), eq(filePart)))
+      when(projectService.createDocument(eq(VALUE_ONE), eq(projectDocument), eq(filePart)))
           .thenReturn(Mono.just(projectDocument));
 
       Mono<ProjectDocument> result = resource.createDocument("TAX123", 1, filePart, projectDocumentJson);
 
       assertNotNull(result.block());
-      verify(projectService).createDocument(eq(1), eq(projectDocument), eq(filePart));
+      verify(projectService).createDocument(eq(VALUE_ONE), eq(projectDocument), eq(filePart));
     }
   }
 
@@ -104,7 +114,7 @@ class RealEstateCompanyProjectResourceTest {
 
       Mono<ProjectDocument> result = resource.createDocument("TAX123", 1, filePart, projectDocumentJson);
 
-      assertThrows(BadRequestException.class, () -> result.block());
+      assertThrows(BadRequestException.class, result::block);
     }
   }
 
