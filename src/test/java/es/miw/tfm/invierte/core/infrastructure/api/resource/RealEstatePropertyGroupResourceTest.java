@@ -125,13 +125,13 @@ class RealEstatePropertyGroupResourceTest {
       fileUtilMock.when(() -> FileUtil.isAllowedFile(filePart)).thenReturn(true);
       fileUtilMock.when(() -> FileUtil.parseJsonToPropertyGroupDocument(propertyGroupDocumentJson))
           .thenReturn(propertyGroupDocument);
-      when(propertyGroupService.createDocument(eq(VALUE_ONE), eq(propertyGroupDocument), eq(filePart)))
+      when(propertyGroupService.createDocument(VALUE_ONE, propertyGroupDocument, filePart))
           .thenReturn(Mono.just(propertyGroupDocument));
 
       Mono<PropertyGroupDocument> result = resource.createDocument("TAX123", 1, filePart, propertyGroupDocumentJson);
 
       assertNotNull(result.block());
-      verify(propertyGroupService).createDocument(eq(VALUE_ONE), eq(propertyGroupDocument), eq(filePart));
+      verify(propertyGroupService).createDocument(VALUE_ONE, propertyGroupDocument, filePart);
     }
   }
 

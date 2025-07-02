@@ -42,7 +42,7 @@ class PropertyServiceTest {
   @Test
   void create_shouldDelegateToPersistence() {
     Property property = Property.builder().name("Test").build();
-    when(propertyPersistence.create(eq(property), eq(VALUE_ONE))).thenReturn(Mono.just(property));
+    when(propertyPersistence.create(property, VALUE_ONE)).thenReturn(Mono.just(property));
 
     StepVerifier.create(propertyService.create(property, 1))
         .expectNext(property)

@@ -15,7 +15,6 @@ import es.miw.tfm.invierte.core.infrastructure.data.dao.CatalogDetailRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.PropertyGroupDocumentRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.PropertyGroupRepository;
 import es.miw.tfm.invierte.core.infrastructure.data.dao.SubProjectPropertyGroupRepository;
-import es.miw.tfm.invierte.core.infrastructure.data.entity.CatalogDetailEntity;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.PropertyGroupDocumentEntity;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.PropertyGroupEntity;
 import es.miw.tfm.invierte.core.infrastructure.data.entity.SubProjectPropertyGroupEntity;
