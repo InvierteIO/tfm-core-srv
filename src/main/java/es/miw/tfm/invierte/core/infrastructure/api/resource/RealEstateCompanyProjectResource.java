@@ -76,11 +76,21 @@ public class RealEstateCompanyProjectResource {
     return this.projectService.update(projectId, project);
   }
 
+  /**
+   * Retrieves a {@link Project} by its ID for the specified company.
+   * Only users with the OWNER role for the company can access this endpoint.
+   *
+   * @param taxIdentificationNumber the tax identification number of the company
+   * @param projectId the ID of the project to retrieve
+   * @return a {@link Mono} emitting the requested {@link Project}
+   * @author denilssonmn
+   */
   @GetMapping(PROJECT_ID)
   @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
   public Mono<Project> read(@PathVariable String taxIdentificationNumber,
       @PathVariable Integer projectId) {
-    log.info("Read project {} for taxIdentificationNumber: {}", projectId, taxIdentificationNumber);
+    log.info("Read project {} for taxIdentificationNumber: {}", projectId,
+        taxIdentificationNumber.replace("\n", "").replace("\r", ""));
     return this.projectService.readById(projectId);
   }
 
@@ -99,7 +109,8 @@ public class RealEstateCompanyProjectResource {
   @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
   public Flux<ProjectSummaryDto> read(@PathVariable String taxIdentificationNumber,
       @RequestParam String propertyType, @RequestParam String projectStatus) {
-    log.info("Read project summary for taxIdentificationNumber: {}", taxIdentificationNumber);
+    log.info("Read project summary for taxIdentificationNumber: {}",
+        taxIdentificationNumber.replace("\n", "").replace("\r", ""));
     return this.projectService.findProjectSummariesByPropertyTypeAndStatus(propertyType,
         projectStatus, taxIdentificationNumber);
   }
@@ -124,7 +135,7 @@ public class RealEstateCompanyProjectResource {
       @RequestPart("projectDocument") String projectDocument
   ) {
     log.info("Create document for project {} and taxIdentificationNumber: {}",
-        projectId, taxIdentificationNumber);
+        projectId, taxIdentificationNumber.replace("\n", "").replace("\r", ""));
 
     if (!FileUtil.isAllowedFile(file)) {
       return Mono.error(new BadRequestException("File has not allowed format"));
@@ -151,7 +162,8 @@ public class RealEstateCompanyProjectResource {
       @PathVariable Integer documentId
   ) {
     log.info("Delete document {} for project {} and taxIdentificationNumber: {}",
-        documentId, projectId, taxIdentificationNumber);
+        documentId, projectId,
+        taxIdentificationNumber.replace("\n", "").replace("\r", ""));
     return this.projectService.deleteDocument(documentId);
   }
 
