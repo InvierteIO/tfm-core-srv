@@ -53,7 +53,7 @@ public class FileUtil {
    */
   public static ProjectDocument parseJsonToProjectDocument(String json) {
     try {
-      log.info("json project document: {}", json);
+      log.info("json project document: {}", json.replace("\n", "").replace("\r", ""));
       ObjectMapper objectMapper = new ObjectMapper();
       return objectMapper.readValue(json, ProjectDocument.class);
     } catch (IOException e) {
@@ -73,7 +73,7 @@ public class FileUtil {
    */
   public static PropertyGroupDocument parseJsonToPropertyGroupDocument(String json) {
     try {
-      log.info("json property group  document: {}", json);
+      log.info("json property group  document: {}", json.replace("\n", "").replace("\r", ""));
       ObjectMapper objectMapper = new ObjectMapper();
       return objectMapper.readValue(json, PropertyGroupDocument.class);
     } catch (IOException e) {
