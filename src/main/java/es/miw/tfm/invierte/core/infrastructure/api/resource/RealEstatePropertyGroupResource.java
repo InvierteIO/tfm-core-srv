@@ -76,8 +76,8 @@ public class RealEstatePropertyGroupResource {
   @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
   public Flux<SubProjectPropertyGroup> create(@PathVariable String taxIdentificationNumber,
       @Valid @RequestBody List<SubProjectPropertyGroup> subProjectPropertyGroupList) {
-    log.info("create property group: {} for taxIdentificationNumber {}",
-        subProjectPropertyGroupList, taxIdentificationNumber);
+    log.info("create property group for taxIdentificationNumber {}",
+        taxIdentificationNumber.replace("\n", "").replace("\r", ""));
     return this.propertyGroupService.create(subProjectPropertyGroupList);
   }
 
@@ -97,7 +97,7 @@ public class RealEstatePropertyGroupResource {
       @PathVariable String taxIdentificationNumber,
       @PathVariable Integer projectId) {
     log.info("Get properties group for taxIdentificationNumber {} and projectId {}",
-        taxIdentificationNumber, projectId);
+        taxIdentificationNumber.replace("\n", "").replace("\r", ""), projectId);
     return this.propertyGroupService
         .readByTaxIdentificationNumberAndProjectId(taxIdentificationNumber, projectId);
   }
@@ -119,7 +119,8 @@ public class RealEstatePropertyGroupResource {
       @PathVariable Integer projectId, @PathVariable Integer stagePropertyGroupId) {
     log.info("Delete property group for taxIdentificationNumber {}"
             + " and projectId {} and stagePropertyGroupId {}",
-        taxIdentificationNumber, projectId, stagePropertyGroupId);
+        taxIdentificationNumber.replace("\n", "").replace("\r", ""),
+        projectId, stagePropertyGroupId);
     return this.propertyGroupService.delete(taxIdentificationNumber,
         projectId, stagePropertyGroupId);
   }
@@ -142,7 +143,7 @@ public class RealEstatePropertyGroupResource {
       @PathVariable Integer projectId, @PathVariable Integer propertyGroupId) {
     log.info("Delete all property group for taxIdentificationNumber {}"
             + " and projectId {} and propertyGroupId {}",
-        taxIdentificationNumber, projectId, propertyGroupId);
+        taxIdentificationNumber.replace("\n", "").replace("\r", ""), projectId, propertyGroupId);
     return this.propertyGroupService
         .deleteAllByPropertyGroup(taxIdentificationNumber, projectId, propertyGroupId);
   }
@@ -162,8 +163,8 @@ public class RealEstatePropertyGroupResource {
   public Flux<SubProjectPropertyGroup> assignPropertyGroup(
       @PathVariable String taxIdentificationNumber,
       @Valid @RequestBody List<SubProjectPropertyGroup> subProjectPropertyGroupList) {
-    log.info("Assign property group: {} for taxIdentificationNumber {}",
-        subProjectPropertyGroupList, taxIdentificationNumber);
+    log.info("Assign property group for taxIdentificationNumber {}",
+        taxIdentificationNumber.replace("\n", "").replace("\r", ""));
     return this.propertyGroupService.assign(subProjectPropertyGroupList);
   }
 
@@ -182,8 +183,8 @@ public class RealEstatePropertyGroupResource {
   public Flux<SubProjectPropertyGroup> duplicatePropertyGroup(
       @PathVariable String taxIdentificationNumber,
       @Valid @RequestBody List<SubProjectPropertyGroup> subProjectPropertyGroupList) {
-    log.info("duplicate property group: {} for taxIdentificationNumber {}",
-        subProjectPropertyGroupList, taxIdentificationNumber);
+    log.info("duplicate property group for taxIdentificationNumber {}",
+        taxIdentificationNumber.replace("\n", "").replace("\r", ""));
     return this.propertyGroupService.duplicate(subProjectPropertyGroupList);
   }
 
@@ -201,8 +202,8 @@ public class RealEstatePropertyGroupResource {
   @PreAuthorize("@securityUtil.hasRoleForCompanyCode('OWNER', #taxIdentificationNumber)")
   public Flux<SubProjectPropertyGroup> update(@PathVariable String taxIdentificationNumber,
       @Valid @RequestBody List<SubProjectPropertyGroup> subProjectPropertyGroupList) {
-    log.info("update property-group: {} for taxIdentificationNumber {}",
-        subProjectPropertyGroupList, taxIdentificationNumber);
+    log.info("update property-group for taxIdentificationNumber {}",
+        taxIdentificationNumber.replace("\n", "").replace("\r", ""));
     return this.propertyGroupService.update(subProjectPropertyGroupList);
   }
 
@@ -228,7 +229,7 @@ public class RealEstatePropertyGroupResource {
       @RequestPart("propertyGroupDocument") String propertyGroupDocument
   ) {
     log.info("Create document for property group {} and taxIdentificationNumber: {}",
-        propertyGroupId, taxIdentificationNumber);
+        propertyGroupId, taxIdentificationNumber.replace("\n", "").replace("\r", ""));
 
     if (!FileUtil.isAllowedFile(file)) {
       return Mono.error(new BadRequestException("File has not allowed format"));
@@ -259,7 +260,7 @@ public class RealEstatePropertyGroupResource {
   ) {
     log.info("Delete property-group document {} for property group {}"
             + " and taxIdentificationNumber: {}",
-        documentId, propertyGroupId, taxIdentificationNumber);
+        documentId, propertyGroupId, taxIdentificationNumber.replace("\n", "").replace("\r", ""));
     return this.propertyGroupService.deleteDocument(documentId);
   }
 
